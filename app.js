@@ -19,6 +19,7 @@ app.use(express.urlencoded( {extended:false} ));
 app.use(express.json());
 
 
+//Obtencion del certificado SSL para habilitar el uso de HTTPS
 const privateKey = fs.readFileSync( path.join(process.env.PATHCRT, process.env.KEY), 'utf-8');
 const certificate = fs.readFileSync( path.join(process.env.PATHCRT,process.env.CRT), 'utf-8');
 const credentials = {
