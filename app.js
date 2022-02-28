@@ -1,18 +1,30 @@
 //Zona principal donde se asignan rutas con funciones del servidor.
 
 var express = require("express");
-var playerScore = require("./score");
-var auth = require('./authentication');
-var util = require('./utility');
-var event = require('./event');
-var game = require('./game');
-var debug = require("./debug");
-var casos = require("./case");
+//const http  = require("http");
+const https = require("https");
+const fs    = require("fs");
+const path  = require("path");
 
-var app = express();
+var pScore  = require('./score');
+var auth    = require('./authentication');
+var util    = require('./utility');
+var event   = require('./event');
+var game    = require('./game');
+var debug   = require('./debug');
+var casos   = require('./case');
+
+const app = express();
 app.use(express.urlencoded( {extended:false} ));
 app.use(express.json());
 
+
+const privateKey = fs.readFileSync( path.join(process.env.PATHCRT, process.env.KEY), 'utf-8');
+const certificate = fs.readFileSync( path.join(process.env.PATHCRT,process.env.CRT), 'utf-8');
+const credentials = {
+    key: privateKey,
+    cert: certificate
+};
 
 //Log in
 //body: [username]
@@ -41,8 +53,8 @@ app.get("/score", async (req,res)=>{
     let dif = req.body["dif"];
     let tipo = req.body["tipo"];
     if(tipo == null) tipo = 0;
-    if(isNaN(dif)) res.json(await playerScore.Top10());
-    else res.json(await playerScore.Score(dif,tipo));
+    if(isNaN(dif)) res.json(await pScore.Top10());
+    else res.json(await pScore.Score(dif,tipo));
 });
 
 //Save a score to the DB
@@ -58,7 +70,7 @@ app.post("/score", auth.validateToken, async (req,res)=>{
     let used = req.body["used"];
     let time = req.body["time"];
     let id = await util.UsernameToID(req.body["user"],true);
-    res.json(await playerScore.SaveScore(id,punt,dif,used,time));
+    res.json(await pScore.SaveScore(id,punt,dif,used,time));
 });
 
 //Return sum of scores of the given user
@@ -66,7 +78,7 @@ app.post("/score", auth.validateToken, async (req,res)=>{
 //body: [user] string
 app.get("/score/total", auth.validateToken, async (req,res)=>{
     let id = await util.UsernameToID(req.body["user"],true);
-    res.json(await playerScore.CompleteScore(id));
+    res.json(await pScore.CompleteScore(id));
 });
 
 //Calculates the score of a given data
@@ -87,7 +99,7 @@ app.get("/score/calculate", auth.validateToken, async (req,res)=>{
     let dificultad = req.body["dificultad"];
     let consultaEvaluada = req.body["consulta"];
 
-    let p = await playerScore.CalcularScore(casoID,consultaEvaluada, consultasUsadas,
+    let p = await pScore.CalcularScore(casoID,consultaEvaluada, consultasUsadas,
                                 tiempoEmpleado,casoExamen, retoOpcional, dificultad);
     res.json(p);
 });
@@ -163,14 +175,11 @@ app.get('/case/solve', auth.validateToken, async (req,res)=>{
 
 
 
-/*
-//---Debug y testeo---//
-app.post('/testExplain', async (req,res)=>{
-    let consulta = req.body["query"];
-    res.json(await util.parseExplain(consulta));
-});
-*/
 
+//const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 
-app.listen(process.env.PUERTO);
+//httpServer.listen(process.env.PUERTO);
+httpsServer.listen(process.env.SPUERTO);
+
 console.log("Servicio operativo! " + debug.logFullDate());
