@@ -17,8 +17,8 @@ async function getRandomEvent()
         let [rows,fields] = await db.query(consulta);
         nElem = rows[0]["Count(id)"];
     } 
-    catch {
-        logError("Error de consulta al intentar obtener el número de eventos en getRandomEvent",'event');
+    catch(err) {
+        logError("Error de consulta a la hora de obtener el número de eventos en getRandomEvent: "+err,'event');
         return {info:"Error..."};
     }
 
@@ -49,8 +49,9 @@ async function getEvent(id)
             }
             return {info:"Correcto", res:rows[0]["data"]};
         } 
-        catch {
-            logError("Error de consulta en getEvent", 'event');
+        catch(algo)
+        {
+            logError("Error de consulta en getEvent: "+algo, 'event');
             return {info:"Error..."};
         }
     }
