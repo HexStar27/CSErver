@@ -98,8 +98,8 @@ app.get("/score/calculate", auth.validateToken, async (req,res)=>{
 //Returns a random event or an especific one
 //head: [id] number
 app.get("/event", async (req,res)=>{
-    //Calculate if header id exist
-    if(req.head["id"] != null)
+    //Calculate if id is in header
+    if("id" in req.head)
     {
         let id = req.head["id"];
         if(isNaN(id)) res.json(await event.getRandomEvent());
