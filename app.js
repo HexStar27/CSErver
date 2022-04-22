@@ -16,10 +16,10 @@ app.use(express.json());
 
 
 //Log in
-//head: [username]
+//body: [username]
 //      [password]
 app.post('/login', async (req,res)=>{
-    const{username,password} = req.head;
+    const{username,password} = req.body;
     let accessToken = await auth.Login(username, password);
     if(accessToken.length > 0)
     res.header('authorization',accessToken).json({
@@ -36,42 +36,42 @@ app.post('/login', async (req,res)=>{
 
 //---------------SCORE---------------//
 //Get Top10 score globally OR the scores of a specific difficulty.
-//head: [dif]  int
+//body: [dif]  int
 //      [tipo] int
-app.get("/score", async (req,res)=>{
-    let dif = req.head["dif"];
-    let tipo = req.head["tipo"];
+app.post("/score", async (req,res)=>{
+    let dif = req.body["dif"];
+    let tipo = req.body["tipo"];
     if(tipo == null) tipo = 0;
     if(isNaN(dif)) res.json(await pScore.Top10());
     else res.json(await pScore.Score(dif,tipo));
 });
 
 //Save a score to the DB
-//head: [authorization]
+//body: [authorization]
 //      [dif]  number
 //      [punt] number
 //      [user] string
 //      [used] number
 //      [time] number (float)
 app.post("/score", auth.validateToken, async (req,res)=>{
-    let dif = req.head["dif"];
-    let punt = req.head["punt"];
-    let used = req.head["used"];
-    let time = req.head["time"];
-    let id = await util.UsernameToID(req.head["user"],true);
+    let dif = req.body["dif"];
+    let punt = req.body["punt"];
+    let used = req.body["used"];
+    let time = req.body["time"];
+    let id = await util.UsernameToID(req.body["user"],true);
     res.json(await pScore.SaveScore(id,punt,dif,used,time));
 });
 
 //Return sum of scores of the given user
-//head: [authorization]
+//body: [authorization]
 //      [user] string
-app.get("/score/total", auth.validateToken, async (req,res)=>{
-    let id = await util.UsernameToID(req.head["user"],true);
+app.post("/score/total", auth.validateToken, async (req,res)=>{
+    let id = await util.UsernameToID(req.body["user"],true);
     res.json(await pScore.CompleteScore(id));
 });
 
 //Calculates the score of a given data
-//head: [authorization]
+//body: [authorization]
 //      [caso_id]   number
 //      [consultas] number
 //      [tiempo]    number
@@ -79,14 +79,14 @@ app.get("/score/total", auth.validateToken, async (req,res)=>{
 //      [reto]      boolean
 //      [dificultad] number
 //      [consulta]  string
-app.get("/score/calculate", auth.validateToken, async (req,res)=>{
-    let casoID = req.head["caso_id"];
-    let consultasUsadas = req.head["consultas"];
-    let tiempoEmpleado = req.head["tiempo"];
-    let casoExamen = req.head["examen"];
-    let retoOpcional = req.head["reto"];
-    let dificultad = req.head["dificultad"];
-    let consultaEvaluada = req.head["consulta"];
+app.post("/score/calculate", auth.validateToken, async (req,res)=>{
+    let casoID = req.body["caso_id"];
+    let consultasUsadas = req.body["consultas"];
+    let tiempoEmpleado = req.body["tiempo"];
+    let casoExamen = req.body["examen"];
+    let retoOpcional = req.body["reto"];
+    let dificultad = req.body["dificultad"];
+    let consultaEvaluada = req.body["consulta"];
 
     let p = await pScore.CalcularScore(casoID,consultaEvaluada, consultasUsadas,
                                 tiempoEmpleado,casoExamen, retoOpcional, dificultad);
@@ -95,78 +95,78 @@ app.get("/score/calculate", auth.validateToken, async (req,res)=>{
 
 
 //---------------EVENT---------------//
-//Returns a random event or an especific one
-//head: [id] number
-app.get("/event", async (req,res)=>{
-    //Calculate if id is in header
-    if("id" in req.head)
-    {
-        let id = req.head["id"];
-        if(isNaN(id)) res.json(await event.getRandomEvent());
-        else res.json(await event.getEvent(id));
-    }
-    else res.json({Error: "No se ha especificado un id"});
+//Returns an especific event
+//body: [id] number
+app.post("/event", async (req,res)=>{   
+    let id = req.body["id"];
+    res.json(await event.getEvent(id));
+});
+
+//Returns a random event
+app.get("/event/random", async (req,res)=>{
+    res.json(await event.getRandomEvent());
 });
 
 
 //---------------GAME----------------//
 //Save the savefile of a user in the DB
-//head: [authorization]
+//body: [authorization]
 //      [user] string
 //      [save] json
 app.post("/save", auth.validateToken, async (req,res)=>{
-    let id = await util.UsernameToID(req.head["user"],true);
-    let saveFile = req.head["save"];
+    let id = await util.UsernameToID(req.body["user"],true);
+    let saveFile = req.body["save"];
     res.json(await game.Save(id,saveFile));
 });
 
 //Load the savefile to a user of the DB
-//head: [authorization]
+//body: [authorization]
 //      [user] string
-app.get('/load', auth.validateToken, async (req,res)=>{
-    let id = await util.UsernameToID(req.head["user"],true);
+app.post('/load', auth.validateToken, async (req,res)=>{
+    let id = await util.UsernameToID(req.body["user"],true);
     res.json(await game.Load(id));
 });
 
 
 //---------------CASOS---------------//
 //Return N cases of a given difficulty
-//head: [authorization]
+//body: [authorization]
 //      [dif]   number
 //      [casos] number
-app.get('/case', auth.validateToken, async (req,res)=>{
-    let dif = req.head["dif"];
-    let nCasos = req.head["casos"];
+app.post('/case', auth.validateToken, async (req,res)=>{
+    let dif = req.body["dif"];
+    let nCasos = req.body["casos"];
     res.json(await casos.GetCasosAlmacenados(dif,nCasos));
 });
 
 //Return one exam case of a given difficulty
-//head: [authorization]
+//body: [authorization]
 //      [dif]   number
-app.get('/case/exam', auth.validateToken, async (req,res)=>{
-    let dif = req.head["dif"];
+app.post('/case/exam', auth.validateToken, async (req,res)=>{
+    let dif = req.body["dif"];
     res.json(await casos.GetCasoExamen(dif));
 });
 
 //Return the FINAL case of a given difficulty
-//head: [authorization]
-app.get('/case/final', auth.validateToken, async (req,res)=>{
+//body: [authorization]
+app.post('/case/final', auth.validateToken, async (req,res)=>{
     res.json(await casos.GetCasoFinal());
 });
 
 //Returns whether a proposed solution is valid or not
-//head: [authorization]
+//body: [authorization]
 //      [caseid] number
 //      [caso]   number
-app.get('/case/solve', auth.validateToken, async (req,res)=>{
-    let caseID = req.head["caseid"];
-    let consulta = req.head["caso"];
+app.post('/case/solve', auth.validateToken, async (req,res)=>{
+    let caseID = req.body["caseid"];
+    let consulta = req.body["caso"];
     if(util.AntiInjectionStringField(consulta,'app',true))
         res.json(await casos.ResolverCaso(caseID, consulta));
     else res.json({info:"Incorrecto", res:"La consulta es sospechosa"});
 });
 
 
+//Oda a la alegría
 app.get('/', (req,res)=>{
     res.json({respuesta:"POR FIN"});
 });
