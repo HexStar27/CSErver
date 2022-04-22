@@ -2,9 +2,9 @@
 
 var express = require("express");
 //const http  = require("http");
-//const https = require("https");
-//const fs    = require("fs");
-//const path  = require("path");
+const https = require("https");
+const fs    = require("fs");
+const path  = require("path");
 
 var pScore  = require('./score');
 var auth    = require('./authentication');
@@ -20,12 +20,12 @@ app.use(express.json());
 
 
 //Obtencion del certificado SSL para habilitar el uso de HTTPS
-//const privateKey = fs.readFileSync( path.join(process.env.PATHCRT, process.env.KEY), 'utf-8');
-//const certificate = fs.readFileSync( path.join(process.env.PATHCRT,process.env.CRT), 'utf-8');
-//const credentials = {
-//    key: privateKey,
-//    cert: certificate
-//}; //Código zombi :(
+const privateKey = fs.readFileSync( path.join(process.env.PATHCRT, process.env.KEY), 'utf-8');
+const certificate = fs.readFileSync( path.join(process.env.PATHCRT,process.env.CRT), 'utf-8');
+const credentials = {
+    key: privateKey,
+    cert: certificate
+};
 
 //Log in
 //body: [username]
@@ -175,12 +175,12 @@ app.get('/case/solve', auth.validateToken, async (req,res)=>{
 
 
 
+
+
 //const httpServer = http.createServer(app);
-//const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 
 //httpServer.listen(process.env.PUERTO);
-//httpsServer.listen(process.env.SPUERTO);
+httpsServer.listen(process.env.SPUERTO);
 
-app.listen(5000,()=>{
-    console.log("Servicio operativo! " + debug.logFullDate());
-});
+console.log("Servicio operativo! " + debug.logFullDate());
