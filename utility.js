@@ -19,8 +19,8 @@ async function PlayerExist(id,checkInjection)
             let [rows,fields] = await db.baseP.query(consulta);
             return rows.length != 0;
         }
-        catch{
-            debug.logError("Error de consulta en PlayerExist",'utility');
+        catch(err){
+            debug.logError("Error de consulta en PlayerExist: "+err,'utility');
             return false;
         }
     }
@@ -48,8 +48,8 @@ async function UsernameToID(username,checkInjection)
             }
             else return rows[0]["id"];
         }
-        catch{
-            debug.logError("Error de consulta en UsernameToID.",'utility');
+        catch(err){
+            debug.logError("Error de consulta en UsernameToID: "+err,'utility');
             return null;
         }
     }
@@ -172,16 +172,16 @@ async function parseExplain(casoID,consulta)
     try{
         let[rows,fields] = await db.baseP.query("SELECT consulta FROM cases WHERE id = "+casoID);
         consultaBuena = rows[0]["consulta"];
-    }catch{
-        debug.logError("Error de consulta en parseExplain (No existe el caso)",'utility');
+    }catch(err){
+        debug.logError("Error de consulta en parseExplain (No existe el caso): "+err,'utility');
         return {};
     }
 
     try{
         let[rows,fields] = await db.gameP.query(expl + consultaBuena);
         resultado2 = rows[0]["EXPLAIN"];
-    }catch{
-        debug.logError("Error de consulta en parseExplain, NO DEBERÍA DE EXISTIR",'utility');
+    }catch(err){
+        debug.logError("Error de consulta en parseExplain, NO DEBERÍA DE EXISTIR: "+err,'utility');
         return {};
     }
 
@@ -189,8 +189,8 @@ async function parseExplain(casoID,consulta)
         let [rows,fields] = await db.gameP.query(expl + consulta);
         resultado = rows[0]["EXPLAIN"];
     }
-    catch{
-        debug.logError("Error de consulta en parseExplain",'utility');
+    catch(err){
+        debug.logError("Error de consulta en parseExplain: "+err,'utility');
         return {};
     }
 

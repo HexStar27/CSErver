@@ -30,8 +30,8 @@ async function GetCasosAlmacenados(dif,nCasos)
 
             return {info:"Correcto", res:lista.slice(0,total)};
         } 
-        catch {
-            logError("Error de consulta en GetCasosAlmacenados",'case');
+        catch(err) {
+            logError("Error de consulta en GetCasosAlmacenados: "+err,'case');
             return {info:"Error..."};
         }
     }
@@ -55,8 +55,8 @@ async function GetCasoExamen(dif)
             if(rows.length == 0) return {info:"Correcto", res:[]};
             return {info:"Correcto", res:rows[aleatorio]};
         }
-        catch{
-            logError("Error de consulta en GetCasoExamen",'case');
+        catch(err){
+            logError("Error de consulta en GetCasoExamen: "+err,'case');
             return {info:"Error..."};
         }        
     }
@@ -77,8 +77,8 @@ async function GetCasoFinal()
         if(rows.length == 0) return {info:"Correcto", res:[]};
         return {info:"Correcto", res:rows[aleatorio]};
     } 
-    catch {
-        logError("Error de consulta en GetCasiFinal",'case');
+    catch(err) {
+        logError("Error de consulta en GetCasiFinal: "+err,'case');
         return{info:"Error..."};
     }
 }
@@ -101,24 +101,24 @@ async function ResolverCaso(casoID, qPropuesta)
         try{
             let [rows,fields] = await db.baseP.query(consulta);
             qSol = rows[0]["consulta"];
-        }catch{
-            logError("Error de consulta en ResolverCaso",'case');
+        }catch(err){
+            logError("Error de consulta en ResolverCaso: "+err,'case');
             return {info:"Error...", res:"El caso que se está intentando resolver no existe (?)"};
         }
 
         try{ //Se obtiene la solución almacenada del caso
             let [r1,f1] = await db.gameP.query(qSol);
             solucion = r1;
-        }catch{
-            logError("Error de consulta al obtener la solución en ResolverCaso",'case');
+        }catch(err){
+            logError("Error de consulta al obtener la solución en ResolverCaso: "+err,'case');
             return {info:"Error..."};
         }
 
         try{ //Se obtiene la solución propuesta por el jugador
             let [r2,f2] = await db.gameP.query(qPropuesta);
             resultado = r2;
-        }catch{
-            logError("Error de consulta al obtener la propuesta en ResolverCaso",'case');
+        }catch(err){
+            logError("Error de consulta al obtener la propuesta en ResolverCaso: "+err,'case');
             return {info:"Error..."};
         }
 

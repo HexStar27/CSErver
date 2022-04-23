@@ -18,8 +18,8 @@ async function load(id)
             let [rows,fields] = await db.query(consulta);
             return {info:"Correcto", res:rows[0]["file"]};
         } 
-        catch {
-            logError("Error de consulta en load",'game');
+        catch(err) {
+            logError("Error de consulta en load: "+err,'game');
             return {info:"Error..."};
         }
     }
@@ -49,8 +49,8 @@ async function Save(id,savefile)
             let [rows,fields] = await db.query(consulta);
             return {info:"Correcto", res:"Archivo guardado con éxito."};
         } 
-        catch {
-            logError("Error de consulta en Save",'game');
+        catch(err) {
+            logError("Error de consulta en Save: "+err,'game');
             return {info:"Error..."};
         }
     }

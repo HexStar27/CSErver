@@ -14,8 +14,8 @@ async function Top10()
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
     }
-    catch{
-        logError("Error de consulta en Top10", 'score');
+    catch(err){
+        logError("Error de consulta en Top10: "+err, 'score');
         return {info:"Error..."};
     }
 }
@@ -50,8 +50,8 @@ async function Score(dif, tipo)
             let [rows,fields] = await db.query(consulta);
             return {info:"Correcto", res:rows};
         }
-        catch{
-            logError("Error de consulta en Score",'score');
+        catch(err){
+            logError("Error de consulta en Score: "+err,'score');
             return {info:"Error..."};
         }
     }
@@ -84,8 +84,8 @@ async function Score(dif, tipo)
              let [rows,fields] = await db.query(consulta);
              return {info:"Correcto", res:"Puntuación guardada correctamente."};
          }
-         catch{
-             logError("Error de consulta en SaveScore", 'score');
+         catch(err){
+             logError("Error de consulta en SaveScore: "+err, 'score');
              return {info:"Error..."};
          }
      }
@@ -154,8 +154,8 @@ async function CompleteScore(id)
             if (rows.length == 0) return {info:"Incorrecto", res:"Este jugador no tiene puntuación."};
             return {info:"Correcto", res:rows[0]["SUM(score)"]};
         }
-        catch{
-            logError("Error de consulta en CompleteScore",'score');
+        catch(err){
+            logError("Error de consulta en CompleteScore: "+err,'score');
             return {info:"Error..."};
         }
     }
