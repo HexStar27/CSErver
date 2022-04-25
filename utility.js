@@ -112,12 +112,11 @@ function AntiInjectionStringField(data,name,pass)
 {
     //Esto habrá que modificarlo según los carácteres válidos que permita el cirfado
     //de contraseña en unity.
-    const invalidChars = [';',',','"',"'",'.','%','#','/','-'];
+    const invalidChars = ['"',"'"];
     let isString = typeof(data) == typeof("a");
     if(isString)
     {
         let n = invalidChars.length;
-        if(pass) n = 1;
 
         let valid = true;
         for(let i = 0; (i < n) && valid; i++){
