@@ -74,7 +74,7 @@ async function ValidLogin(username,password,checkInjection)
 
     if(valid)
     {
-        let consulta = "SELECT nickname FROM players WHERE nickname = '"+username+"' AND password = '"+password+"'";
+        let consulta = "SELECT email FROM players WHERE email = '"+username+"' AND password = '"+password+"'";
         try{
             let [rows,fields] = await db.baseP.query(consulta);
             return rows.length > 0;
