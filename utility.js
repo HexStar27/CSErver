@@ -74,7 +74,6 @@ async function ValidLogin(username,password,checkInjection)
 
     if(valid)
     {
-        console.log("Validando login de "+username+" con contraseña "+password);
         let consulta = "SELECT email FROM players WHERE email = '"+username+"' AND password = '"+password+"'";
         try{
             let [rows,fields] = await db.baseP.query(consulta);

@@ -41,7 +41,7 @@ async function Login(username, password)
 {
     //Consulta BD para ver si existe usuario
     let v = await util.ValidLogin(username,password,true);
-    console.log(v);
+    console.log("Validando login de "+username+", Resultado: "+v);
     if(!v) return "";
     //Información a encriptar para generar el token
     const info = {username : username, password : password};
