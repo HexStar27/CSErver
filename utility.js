@@ -68,8 +68,8 @@ async function ValidLogin(username,password,checkInjection)
     let valid = true;
     if(checkInjection)
     {
-        valid = AntiInjectionStringField(username,'utility',false);
-        valid = valid && AntiInjectionStringField(password,'utility',true)
+        valid = AntiInjectionStringField(username,'utility',false) && 
+                AntiInjectionStringField(password,'utility',true);
     }
 
     if(valid)

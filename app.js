@@ -19,7 +19,8 @@ app.use(express.json());
 //body: [username]
 //      [password]
 app.post('/login', async (req,res)=>{
-    const{username,password} = req.body;
+    username = req.body["username"];
+    password = req.body["password"];
     let accessToken = await auth.Login(username, password);
     if(accessToken.length > 0)
     res.header('authorization',accessToken).json({
