@@ -23,7 +23,7 @@ function generateAcessToken(info)
  */
 function validateToken(req,res,next)
 {
-    const accessToken = req.headers['authorization'];
+    const accessToken = req.body['authorization'];
     if(!accessToken) res.json({info:"Incorrecto", res:"No se ha encontrado ninguna clave de acceso en 'authorization'"});
 
     jwt.verify(accessToken, process.env.SECRET, (err, info)=>{
