@@ -40,7 +40,7 @@ async function UsernameToID(username,checkInjection)
 
     if(valid)
     {
-        let consulta = "SELECT id FROM players WHERE nickname = '"+username+"'";
+        let consulta = "SELECT id FROM players WHERE email = '"+username+"'";
         try{
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length == 0){
