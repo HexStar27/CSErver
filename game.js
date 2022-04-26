@@ -16,6 +16,7 @@ async function load(id)
         
         try {
             let [rows,fields] = await db.query(consulta);
+            if (rows.length == 0) return {info:"Incorrecto", res:"No se ha encontrado ningún archivo guardado..."};
             return {info:"Correcto", res:rows[0]["file"]};
         } 
         catch(err) {
