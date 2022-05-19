@@ -91,6 +91,7 @@ async function GetCasoFinal()
  */
 async function ResolverCaso(casoID, qPropuesta)
 {
+    casoID = parseInt(casoID);
     if(util.AntiInjectionNumberField(casoID,'case'))
     {
         let resultado;
