@@ -15,7 +15,7 @@ async function GetCasosAlmacenados(dif,nCasos)
     if (util.AntiInjectionNumberField(dif,"case") &&
         util.AntiInjectionNumberField(nCasos,"case"))
     {
-        let consulta = "SELECT id, data, dif from cases where dif = "+dif+" AND isExam = FALSE"
+        let consulta = "SELECT data from cases where dif = "+dif+" AND isExam = FALSE"
         
         try {
             let [rows,fields] = await db.baseP.query(consulta);
@@ -25,13 +25,9 @@ async function GetCasosAlmacenados(dif,nCasos)
 
             if(n < total) total = n;
 
-            for (let i=0; i < n; i++) lista.push(rows[i]);
+            for (let i=0; i < n; i++) lista.push(rows[i]['data']);
             lista.sort((a,b)=>{return 0.5 - Math.random()});
-            let conjunto = lista.slice(0,total);
-            conjunto.forEach(elem => {
-                elem += "#";
-            });
-            return {info:"Correcto", res:conjunto};
+            return {info:"Correcto", res:lista.slice(0,total)};
         } 
         catch(err) {
             logError("Error de consulta en GetCasosAlmacenados: "+err,'case');
