@@ -27,7 +27,11 @@ async function GetCasosAlmacenados(dif,nCasos)
 
             for (let i=0; i < n; i++) lista.push(rows[i]['data']);
             lista.sort((a,b)=>{return 0.5 - Math.random()});
-            return {info:"Correcto", res:lista.slice(0,total)};
+            let conjunto = lista.slice(0,total);
+            conjunto.forEach(elem => {
+                elem += "#";
+            });
+            return {info:"Correcto", res:conjunto};
         } 
         catch(err) {
             logError("Error de consulta en GetCasosAlmacenados: "+err,'case');
