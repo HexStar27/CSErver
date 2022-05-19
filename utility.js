@@ -96,7 +96,7 @@ async function ValidLogin(username,password,checkInjection)
  */
 function AntiInjectionNumberField(id, name)
 {
-    let wrong = typeof id != 'number' || id == null;
+    let wrong = Number.isNaN(id);
     if(wrong) debug.logSQLInjectionWarning(name,id);
     return !wrong;
 }
