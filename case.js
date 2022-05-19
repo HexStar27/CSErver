@@ -29,7 +29,7 @@ async function GetCasosAlmacenados(dif,nCasos)
             lista.sort((a,b)=>{return 0.5 - Math.random()});
             let conjunto = lista.slice(0,total);
             conjunto.forEach(elem => {
-                elem.concat("#");
+                elem += "#";
             });
             return {info:"Correcto", res:conjunto};
         } 
