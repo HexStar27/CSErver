@@ -51,7 +51,7 @@ async function Save(id,savefile)
             return {info:"Correcto", res:"Archivo guardado con éxito."};
         } 
         catch {
-            let consulta = "UPDATE 'savedfiles' SET file = '"+savefileTXT+"' WHERE player_id = "+id;
+            let consulta = "UPDATE savedfiles SET file = '"+savefileTXT+"' WHERE player_id = "+id;
             try{
                 let [rows,fields] = await db.query(consulta);
                 return {info:"Correcto", res:"Archivo guardado con éxito."};
