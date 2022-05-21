@@ -140,6 +140,23 @@ async function ResolverCaso(casoID, qPropuesta)
     else return {info:"Incorrecto", res:false};
 }
 
+async function RealizarConsulta(consulta){
+
+    if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) return {info:"Incorrecto",res:{}}
+    comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
+    "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
+    comoqueno.forEach(elem => {
+        if(consulta.includes(elem)) return {info:"Incorrecto",res:{}}
+    });
+
+    try{
+        let [rows,fields] = await db.gameP.query(consulta);
+        return {info:"Correcto",res:rows}
+    }catch(err){
+        return {info:"Correcto",res:err}
+    }
+}
+
 function isEqualJson(a,b){
     k1 = Object.keys(a);
     k2 = Object.keys(b);
@@ -166,3 +183,4 @@ module.exports.GetCasosAlmacenados = GetCasosAlmacenados;
 module.exports.GetCasoExamen = GetCasoExamen;
 module.exports.GetCasoFinal = GetCasoFinal;
 module.exports.ResolverCaso = ResolverCaso;
+module.exports.RealizarConsulta = RealizarConsulta;
