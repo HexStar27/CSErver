@@ -166,6 +166,10 @@ app.post('/case/solve', auth.validateToken, async (req,res)=>{
     else res.json({info:"Incorrecto", res:"La consulta es sospechosa"});
 });
 
+app.post('/case/check', auth.validateToken, async(req,res)=>{
+    let consulta = req.body["consulta"];
+    res.json(await casos.RealizarConsulta(consulta));
+});
 
 //Oda a la alegría
 app.get('/', (req,res)=>{
