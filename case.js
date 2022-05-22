@@ -94,6 +94,13 @@ async function GetCasoFinal()
  */
 async function ResolverCaso(casoID, qPropuesta)
 {
+    if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) return {info:"Incorrecto",res:{}}
+    comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
+    "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
+    comoqueno.forEach(elem => {
+        if(consulta.includes(elem)) return {info:"Incorrecto", res:"La consulta es sospechosa"}
+    });
+
     casoID = parseInt(casoID);
     if(util.AntiInjectionNumberField(casoID,'case'))
     {
