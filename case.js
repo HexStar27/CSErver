@@ -133,7 +133,14 @@ async function ResolverCaso(casoID, qPropuesta)
             return {info:"Error..."};
         }
 
-        let esIgual = resultado == solucion;
+        let esIgual = resultado.length == solucion.length;
+        if (esIgual)
+        {
+            for (let index = 0; index < resultado.length; index++) {
+                const element = resultado[index];
+                esIgual = esIgual & (resultado[index] == solucion[index]);
+            }
+        }
         console.log(solucion);
         console.log(resultado);
         
