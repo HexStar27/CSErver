@@ -140,7 +140,7 @@ async function ResolverCaso(casoID, qPropuesta)
                 const element = resultado[index];
                 esIgual = esIgual && (resultado[index] == solucion[index]);
                 console.log(solucion[index]);
-                console.log(esultado[index]);
+                console.log(resultado[index]);
             }
         }
         
