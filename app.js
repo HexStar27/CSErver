@@ -161,11 +161,12 @@ app.post('/case/final', auth.validateToken, async (req,res)=>{
 app.post('/case/solve', auth.validateToken, async (req,res)=>{
     let caseID = req.body["caseid"];
     let consulta = req.body["caso"];
-    if(util.AntiInjectionStringField(consulta,'app',true))
-        res.json(await casos.ResolverCaso(caseID, consulta));
-    else res.json({info:"Incorrecto", res:"La consulta es sospechosa"});
+    res.json(await casos.ResolverCaso(caseID, consulta));
 });
 
+//Return query given to the GAME database
+//body: [authorization]
+//      [consulta] string
 app.post('/case/check', auth.validateToken, async(req,res)=>{
     let consulta = req.body["consulta"];
     res.json(await casos.RealizarConsulta(consulta));
