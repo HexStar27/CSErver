@@ -138,11 +138,11 @@ async function ResolverCaso(casoID, qPropuesta)
         {
             for (let index = 0; index < resultado.length; index++) {
                 const element = resultado[index];
-                esIgual = esIgual & (resultado[index] == solucion[index]);
+                esIgual = esIgual && (resultado[index] == solucion[index]);
+                console.log(solucion[index]);
+                console.log(esultado[index]);
             }
         }
-        console.log(solucion);
-        console.log(resultado);
         
         //Si por algún fallo ambas cadenas están vacías, no se contará como correcta la solución.
         let noVacio = solucion.length != 0;
