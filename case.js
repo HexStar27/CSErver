@@ -141,8 +141,6 @@ async function ResolverCaso(casoID, qPropuesta)
                 let a = JSON.stringify(resultado[index]);
                 let b = JSON.stringify(solucion[index]);
                 esIgual = esIgual && (a == b);
-                console.log(a);
-                console.log(b);
             }
         }
         
