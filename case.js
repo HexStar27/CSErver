@@ -138,9 +138,11 @@ async function ResolverCaso(casoID, qPropuesta)
         {
             for (let index = 0; index < resultado.length; index++) {
                 const element = resultado[index];
-                esIgual = esIgual && (resultado[index] == solucion[index]);
-                console.log(typeof(solucion[index]));
-                console.log(typeof(resultado[index]));
+                let a = JSON.stringify(resultado[index]);
+                let b = JSON.stringify(solucion[index]);
+                esIgual = esIgual && (a == b);
+                console.log(a);
+                console.log(b);
             }
         }
         
