@@ -133,7 +133,7 @@ async function ResolverCaso(casoID, qPropuesta)
             return {info:"Error..."};
         }
 
-        let esIgual = jsonArrayEquals(resultado,solucion);
+        let esIgual = resultado == solucion;
         
         //Si por algún fallo ambas cadenas están vacías, no se contará como correcta la solución.
         let noVacio = solucion.length != 0;
