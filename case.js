@@ -134,6 +134,8 @@ async function ResolverCaso(casoID, qPropuesta)
         }
 
         let esIgual = resultado == solucion;
+        console.log(solucion);
+        console.log(resultado);
         
         //Si por algún fallo ambas cadenas están vacías, no se contará como correcta la solución.
         let noVacio = solucion.length != 0;
