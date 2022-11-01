@@ -173,9 +173,9 @@ app.post('/case/check', auth.validateToken, async(req,res)=>{
 });
 
 //Oda a la alegría
-app.get('/', (req,res)=>{
-    res.json({respuesta:"POR FIN"});
-});
+//app.get('/', (req,res)=>{
+//    res.json({respuesta:"POR FIN"});
+//});
 
 app.listen(5000,()=>{
     console.log("Servicio operativo! " + debug.logFullDate());
