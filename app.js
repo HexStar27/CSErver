@@ -14,11 +14,12 @@ const app = express();
 app.use(express.urlencoded( {extended:false} ));
 app.use(express.json());
 
+const root = '/game'
 
 //Log in
 //body: [username]
 //      [password]
-app.post('/login', async (req,res)=>{
+app.post(root+'/login', async (req,res)=>{
     username = req.body["username"];
     password = req.body["password"];
     let accessToken = await auth.Login(username, password);
@@ -39,7 +40,7 @@ app.post('/login', async (req,res)=>{
 //Get Top10 score globally OR the scores of a specific difficulty.
 //body: [dif]  int
 //      [tipo] int
-app.post("/score", async (req,res)=>{
+app.post(root+"/score", async (req,res)=>{
     let dif = req.body["dif"];
     let tipo = req.body["tipo"];
     if(tipo == null) tipo = 0;
@@ -54,7 +55,7 @@ app.post("/score", async (req,res)=>{
 //      [user] string
 //      [used] number
 //      [time] number (float)
-app.post("/score", auth.validateToken, async (req,res)=>{
+app.post(root+"/score", auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     let punt = req.body["punt"];
     let used = req.body["used"];
@@ -66,7 +67,7 @@ app.post("/score", auth.validateToken, async (req,res)=>{
 //Return sum of scores of the given user
 //body: [authorization]
 //      [user] string
-app.post("/score/total", auth.validateToken, async (req,res)=>{
+app.post(root+"/score/total", auth.validateToken, async (req,res)=>{
     let id = await util.UsernameToID(req.body["user"],true);
     res.json(await pScore.CompleteScore(id));
 });
@@ -80,7 +81,7 @@ app.post("/score/total", auth.validateToken, async (req,res)=>{
 //      [reto]      boolean
 //      [dificultad] number
 //      [consulta]  string
-app.post("/score/calculate", auth.validateToken, async (req,res)=>{
+app.post(root+"/score/calculate", auth.validateToken, async (req,res)=>{
     let casoID = req.body["caso_id"];
     let consultasUsadas = req.body["consultas"];
     let tiempoEmpleado = req.body["tiempo"];
@@ -98,13 +99,13 @@ app.post("/score/calculate", auth.validateToken, async (req,res)=>{
 //---------------EVENT---------------//
 //Returns an especific event
 //body: [id] number
-app.post("/event", async (req,res)=>{   
+app.post(root+"/event", async (req,res)=>{   
     let id = req.body["id"];
     res.json(await event.getEvent(id));
 });
 
 //Returns a random event
-app.get("/event/random", async (req,res)=>{
+app.get(root+"/event/random", async (req,res)=>{
     res.json(await event.getRandomEvent());
 });
 
@@ -114,7 +115,7 @@ app.get("/event/random", async (req,res)=>{
 //body: [authorization]
 //      [user] string
 //      [save] json
-app.post("/save", auth.validateToken, async (req,res)=>{
+app.post(root+"/save", auth.validateToken, async (req,res)=>{
     let id = await util.UsernameToID(req.body["user"],true);
     let saveFile = req.body["save"];
     res.json(await game.Save(id,saveFile));
@@ -123,7 +124,7 @@ app.post("/save", auth.validateToken, async (req,res)=>{
 //Load the savefile to a user of the DB
 //body: [authorization]
 //      [user] string
-app.post('/load', auth.validateToken, async (req,res)=>{
+app.post(root+'/load', auth.validateToken, async (req,res)=>{
     let id = await util.UsernameToID(req.body["user"],true);
     res.json(await game.Load(id));
 });
@@ -134,7 +135,7 @@ app.post('/load', auth.validateToken, async (req,res)=>{
 //body: [authorization]
 //      [dif]   number
 //      [casos] number
-app.post('/case', auth.validateToken, async (req,res)=>{
+app.post(root+'/case', auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     let nCasos = req.body["casos"];
     res.json(await casos.GetCasosAlmacenados(dif,nCasos));
@@ -143,14 +144,14 @@ app.post('/case', auth.validateToken, async (req,res)=>{
 //Return one exam case of a given difficulty
 //body: [authorization]
 //      [dif]   number
-app.post('/case/exam', auth.validateToken, async (req,res)=>{
+app.post(root+'/case/exam', auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     res.json(await casos.GetCasoExamen(dif));
 });
 
 //Return the FINAL case of a given difficulty
 //body: [authorization]
-app.post('/case/final', auth.validateToken, async (req,res)=>{
+app.post(root+'/case/final', auth.validateToken, async (req,res)=>{
     res.json(await casos.GetCasoFinal());
 });
 
@@ -158,7 +159,7 @@ app.post('/case/final', auth.validateToken, async (req,res)=>{
 //body: [authorization]
 //      [caseid] number
 //      [caso]   number
-app.post('/case/solve', auth.validateToken, async (req,res)=>{
+app.post(root+'/case/solve', auth.validateToken, async (req,res)=>{
     let caseID = req.body["caseid"];
     let consulta = req.body["caso"];
     res.json(await casos.ResolverCaso(caseID, consulta));
@@ -167,7 +168,7 @@ app.post('/case/solve', auth.validateToken, async (req,res)=>{
 //Return query given to the GAME database
 //body: [authorization]
 //      [consulta] string
-app.post('/case/check', auth.validateToken, async(req,res)=>{
+app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
     let consulta = req.body["consulta"];
     res.json(await casos.RealizarConsulta(consulta));
 });
