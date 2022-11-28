@@ -44,7 +44,7 @@ async function Save(id,savefile)
         //Comprobar que no se esté intentando hacer una inyección SQL dentro del archivo de guardado
         if(!check.SearchForKeyWords(savefileTXT,'game')) return {info:"Incorrecto", res:"Cuidaito conmigo, eh? Qué he encotrao cosas feas en ese archivo de guardado."};
 
-        let consulta = "INSERT INTO savedfiles(player_id, file) VALUES("+id+", '"+savefileTXT+"')";
+        let consulta = "INSERT INTO 'savedfiles'('player_id', 'file') VALUES("+id+", '"+savefileTXT+"')";
 
         try {
             let [rows,fields] = await db.query(consulta);
@@ -52,7 +52,7 @@ async function Save(id,savefile)
         } 
         catch {
             try{
-            let consulta = "UPDATE savedfiles SET file = "+savefileTXT+" WHERE player_id = "+id;
+            let consulta = "UPDATE 'savedfiles' SET 'file' = '"+savefileTXT+"' WHERE player_id = "+id;
             try{
                 let [rows,fields] = await db.query(consulta);
                 return {info:"Correcto", res:"Archivo sobreescrito con éxito."};
