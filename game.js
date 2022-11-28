@@ -44,7 +44,7 @@ async function Save(id,savefile)
         //Comprobar que no se esté intentando hacer una inyección SQL dentro del archivo de guardado
         if(!check.SearchForKeyWords(savefileTXT,'game')) return {info:"Incorrecto", res:"Cuidaito conmigo, eh? Qué he encotrao cosas feas en ese archivo de guardado."};
 
-        savefileTXT = savefileTXT.substring(1,savefileTXT.length()-1);
+        savefileTXT = savefileTXT.substring(1,savefileTXT.length-1);
         let consulta = "INSERT INTO savedfiles(file, player_id) VALUES('"+savefileTXT+"', "+id+")";
         
         try {
