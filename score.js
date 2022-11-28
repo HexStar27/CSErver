@@ -9,7 +9,7 @@ const { logError } = require("./debug");
  */
 async function Top10()
 {
-    let consulta = "SELECT p.nickname, sum(ps.score) FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id GROUP BY player_id ORDER BY sum(score) DESC limit 10";
+    let consulta = "SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id GROUP BY player_id ORDER BY sum(score) DESC limit 10";
     try{
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
