@@ -9,6 +9,7 @@ var event   = require('./event');
 var game    = require('./game');
 var debug   = require('./debug');
 var casos   = require('./case');
+var tService= require('./tableService')
 
 const app = express();
 app.use(express.urlencoded( {extended:false} ));
@@ -171,6 +172,16 @@ app.post(root+'/case/solve', auth.validateToken, async (req,res)=>{
 app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
     let consulta = req.body["consulta"];
     res.json(await casos.RealizarConsulta(consulta));
+});
+
+
+//----------OTROS SERVICIOS----------//
+//Return tables and columns availables from the codes given.
+//body: [authorization]
+//      [codigos] array
+app.post(root+'/meta', auth.validateToken, async (req,res)=>{
+    let codigos = req.body["codigos"];
+    res.json(await tService.GetTablesAvailables(codigos));
 });
 
 //Oda a la alegría
