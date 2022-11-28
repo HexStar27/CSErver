@@ -54,7 +54,7 @@ async function Save(id,savefile)
             let consulta = "UPDATE savedfiles SET file = "+savefileTXT+" WHERE player_id = "+id;
             try{
                 let [rows,fields] = await db.query(consulta);
-                return {info:"Correcto", res:"Archivo guardado con éxito."};
+                return {info:"Correcto", res:"Archivo sobreescrito con éxito."};
             }
             catch(err){
                 logError("Error de consulta en Save: "+err,'game');
