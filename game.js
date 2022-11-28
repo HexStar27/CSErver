@@ -44,11 +44,9 @@ async function Save(id,savefile)
         //Comprobar que no se esté intentando hacer una inyección SQL dentro del archivo de guardado
         if(!check.SearchForKeyWords(savefileTXT,'game')) return {info:"Incorrecto", res:"Cuidaito conmigo, eh? Qué he encotrao cosas feas en ese archivo de guardado."};
 
-        let consulta = "INSERT INTO savedfiles(player_id, file) VALUES("+id+", '"+savefileTXT+"')";
-        console.log("SAVING ID = "+id + ", FILE = "+ savefileTXT);
+        let consulta = "INSERT INTO savedfiles(file, player_id) VALUES('"+savefileTXT+"', "+id+")";
         
         try {
-            await db.query("INSERT INTO savedfiles(file, player_id) VALUES ('{}',157)");
             let [rows,fields] = await db.query(consulta);
             return {info:"Correcto", res:"Archivo guardado con éxito."};
         } 
