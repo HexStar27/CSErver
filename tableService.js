@@ -9,7 +9,7 @@ async function GetTablesAvailables(codigos)
 {
     let condiciones = "";
     codigos.array.forEach(cod => {
-        if(!util.SearchForKeyWords(cod,"tableService")) return;
+        if(!util.SearchForKeyWords(cod,"tableService")) return {info:"Error... Un poco SUSpechoso..."};
         condiciones += "id = '" +cod.substring(1,cod.length-1)+ "' OR ";
     });
     condiciones = condiciones.substring(0,condiciones.length-3);
