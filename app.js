@@ -176,12 +176,19 @@ app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
 
 
 //----------OTROS SERVICIOS----------//
-//Return tables and columns availables from the codes given.
+//Return tables availables from the codes given.
 //body: [authorization]
 //      [codigos] array
 app.post(root+'/meta', auth.validateToken, async (req,res)=>{
     let codigos = req.body["codigos"];
     res.json(await tService.GetTablesAvailables(codigos));
+});
+//Return columns from a given table.
+//body: [authorization]
+//      [table] array
+app.post(root+'/meta/col', auth.validateToken, async (req,res)=>{
+    let table = req.body["table"];
+    res.json(await tService.GetTablesAvailables(table));
 });
 
 //Oda a la alegría
