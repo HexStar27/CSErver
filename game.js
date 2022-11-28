@@ -47,7 +47,8 @@ async function Save(id,savefile)
         let consulta = "INSERT INTO savedfiles(file, player_id) VALUES('"+savefileTXT+"', "+id+")";
         
         try {
-            let [rows,fields] = await db.query(consulta);
+            await db.query(consulta);
+            console.log(consulta);
             return {info:"Correcto", res:"Archivo guardado con éxito."};
         } 
         catch {
