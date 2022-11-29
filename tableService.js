@@ -9,9 +9,10 @@ async function GetTablesAvailables(codigos)
 {
     let condiciones = "";
     try{
-    codigos = JSON.parse(codigos);
-    codigos = codigos.codigos;
-    codigos.array.forEach(cod => {
+        console.log(codigos);
+        codigos = JSON.parse(codigos);
+        codigos = codigos.codigos;
+        codigos.array.forEach(cod => {
         if(!util.SearchForKeyWords(cod,"tableService")) return {info:"Error... Un poco SUSpechoso..."};
         condiciones += "id = '" +cod.substring(1,cod.length-1)+ "' OR ";
     });
