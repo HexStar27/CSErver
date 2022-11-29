@@ -8,11 +8,16 @@ var util = require("./utility");
 async function GetTablesAvailables(codigos)
 {
     let condiciones = "";
-    if(!(codigos.constructor === Array)) return {info:"Error... No se ha pasado un array."};
+    try{
+    codigos = JSON.parse(codigos);
+    codigos = codigos.codigos;
     codigos.array.forEach(cod => {
         if(!util.SearchForKeyWords(cod,"tableService")) return {info:"Error... Un poco SUSpechoso..."};
         condiciones += "id = '" +cod.substring(1,cod.length-1)+ "' OR ";
     });
+    } catch{
+        return  {info:"Error..."};
+    }
     condiciones = condiciones.substring(0,condiciones.length-3);
     let consulta = "SELECT content FROM tablesUnlockCode " + condiciones;
 
