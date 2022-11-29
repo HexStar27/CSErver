@@ -42,7 +42,7 @@ async function GetTableColumns(table)
 
     try {
         let [rows,fields] = await db.query(consulta);
-        return {info:"Correcto", res:rows};
+        return {info:"Correcto", res:{table:table,columns:rows} };
     } catch (err) {
         debug.logError("Error de consulta en GetTableColumns: "+err, 'tableService');
         return {info:"Error..."};
