@@ -14,13 +14,13 @@ async function GetTablesAvailables(codigos)
         codigos = codigos["codigos"];
         codigos.forEach(cod => {
         if(!util.SearchForKeyWords(cod,"tableService")) return {info:"Error... Un poco SUSpechoso..."};
-        condiciones += "id = '" +cod.substring(1,cod.length-1)+ "' OR ";
+        condiciones += "id = '" +cod+ "' OR ";
     });
     } catch{
         return  {info:"Error..."};
     }
     condiciones = condiciones.substring(0,condiciones.length-3);
-    let consulta = "SELECT content FROM tablesUnlockCode " + condiciones;
+    let consulta = "SELECT content FROM tablesUnlockCode WHERE " + condiciones;
 
     try {
         let [rows,fields] = await db.query(consulta);
