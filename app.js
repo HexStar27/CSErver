@@ -188,7 +188,7 @@ app.post(root+'/meta', auth.validateToken, async (req,res)=>{
 //      [table] array
 app.post(root+'/meta/col', auth.validateToken, async (req,res)=>{
     let table = req.body["table"];
-    res.json(await tService.GetTablesAvailables(table));
+    res.json(await tService.GetTableColumns(table));
 });
 
 //Oda a la alegría
