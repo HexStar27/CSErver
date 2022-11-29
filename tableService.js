@@ -33,11 +33,14 @@ async function GetTablesAvailables(codigos)
 
 /**
  * Devuelve las columnas dado una serie de códigos desbloqueables (cadenas).
- * @param {array} codigos
+ * @param {string} table
 */
 async function GetTableColumns(table)
 {
-    if(!util.SearchForKeyWords(table)) return {info:"Error... Un poco SUSpechoso..."};
+    if(!util.SearchForKeyWords(table)) {
+        debug.logError(table);
+        return {info:"Error... Un poco SUSpechoso..."};
+    }
     let consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'csedb_game' AND TABLE_NAME = '" +table+ "'";
 
     try {
