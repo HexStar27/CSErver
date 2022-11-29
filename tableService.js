@@ -38,7 +38,7 @@ async function GetTablesAvailables(codigos)
 async function GetTableColumns(table)
 {
     if(!util.SearchForKeyWords(table)) {
-        debug.logError(table);
+        debug.logError(table,'tableService');
         return {info:"Error... Un poco SUSpechoso..."};
     }
     let consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'csedb_game' AND TABLE_NAME = '" +table+ "'";
