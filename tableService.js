@@ -1,5 +1,6 @@
 var db = require("./mysql").baseP;
 var util = require("./utility");
+const debug = require("./debug");
 
 /**
  * Devuelve las tablas dado una serie de códigos desbloqueables (cadenas).
@@ -25,7 +26,7 @@ async function GetTablesAvailables(codigos)
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
     } catch (err) {
-        util.logError("Error de consulta en GetTablesAvailables: "+err, 'tableService');
+        debug.logError("Error de consulta en GetTablesAvailables: "+err, 'tableService');
         return {info:"Error..."};
     }
 }
@@ -43,7 +44,7 @@ async function GetTableColumns(table)
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
     } catch (err) {
-        util.logError("Error de consulta en GetTableColumns: "+err, 'tableService');
+        debug.logError("Error de consulta en GetTableColumns: "+err, 'tableService');
         return {info:"Error..."};
     }
 }
