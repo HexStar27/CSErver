@@ -9,7 +9,6 @@ async function GetTablesAvailables(codigos)
 {
     let condiciones = "";
     try{
-        console.log(codigos);
         codigos = JSON.parse(codigos);
         codigos = codigos["codigos"];
         codigos.forEach(cod => {
@@ -26,7 +25,7 @@ async function GetTablesAvailables(codigos)
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
     } catch (err) {
-        logError("Error de consulta en GetTablesAvailables: "+err, 'tableService');
+        util.logError("Error de consulta en GetTablesAvailables: "+err, 'tableService');
         return {info:"Error..."};
     }
 }
@@ -44,7 +43,7 @@ async function GetTableColumns(table)
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
     } catch (err) {
-        logError("Error de consulta en GetTableColumns: "+err, 'tableService');
+        util.logError("Error de consulta en GetTableColumns: "+err, 'tableService');
         return {info:"Error..."};
     }
 }
