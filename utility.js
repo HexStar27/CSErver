@@ -31,7 +31,7 @@ async function PlayerExist(id,checkInjection)
  * Devuelve la id del usuario con el nombre indicado (o null si no existe)
  * @param {string} username 
  * @param {boolean} checkInjection 
- * @returns 
+ * @returns id del usuario o -1 si no se ha encontrado.
  */
 async function UsernameToID(username,checkInjection)
 {
@@ -45,6 +45,7 @@ async function UsernameToID(username,checkInjection)
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length == 0){
                 debug.logError("No se ha encontrado una id para el usuario "+username,'utility');
+                return -1;
             }
             else return rows[0]["id"];
         }
@@ -54,6 +55,30 @@ async function UsernameToID(username,checkInjection)
         }
     }
     return null;
+}
+
+/**
+ * Cambia el nickname de un jugador...
+ * @param {string} email 
+ * @param {string} newNick 
+ * @returns 
+ */
+async function ChangeNickname(email, newNick)
+{
+    if(!util.SearchForKeyWords(newNick)) {
+        debug.logError("Error de petición, es sospechoso el valor "+newNick,'tableService');
+        return {info:"Error..."};
+    }
+    let id = await util.UsernameToID(email,true);
+    if(id == -1) return {info:"Error... Usuario no encontrado"}
+    let consulta = "UPDATE players SET nickname = '"+newNick+"' WHERE id = "+id;
+    try {
+        let [rows,fields] = await db.baseP.query(consulta);
+        return {info:"Correcto", res:"Nickname cambiado correctamente." };
+    } catch (err) {
+        debug.logError("Error de consulta en ChangeNickname: "+err, 'tableService');
+        return {info:"Error..."};
+    }
 }
 
 /**
@@ -290,5 +315,6 @@ module.exports.AntiInjectionStringField = AntiInjectionStringField;
 module.exports.randBetween = randBetween;
 module.exports.ValidLogin = ValidLogin;
 module.exports.UsernameToID = UsernameToID;
+module.exports.ChangeNickname = ChangeNickname;
 module.exports.SearchForKeyWords = SearchForKeyWords;
 module.exports.parseExplain = parseExplain;

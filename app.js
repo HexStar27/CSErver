@@ -17,6 +17,7 @@ app.use(express.json());
 
 const root = '/game'
 
+//---------------USERS---------------//
 //Log in
 //body: [username]
 //      [password]
@@ -36,16 +37,29 @@ app.post(root+'/login', async (req,res)=>{
     });
 });
 
+//Change Nickname
+//body: [authorization]
+//      [email]
+//      [nickname]
+app.post(root+'/nickname',async (req,res)=>{
+    usuario = req.body["email"];
+    nick = req.body["nickname"];
+    res.json(await util.ChangeNickname(usuario,nick));
+});
+
 
 //---------------SCORE---------------//
-//Get Top10 score globally OR the scores of a specific difficulty.
-//body: [dif]  int
-//      [tipo] int
-app.post(root+"/score", async (req,res)=>{
+//Get Top10 score globally OR the scores of a specific difficulty OR of a specific case.
+//body: [dif]  int (optional)
+//      [tipo] int (optional) -> 0 = Scores, 1 = UsedQueries, 2 = TimeSpent
+//      [caso] int (optional)
+app.post(root+"/score", auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     let tipo = req.body["tipo"];
+    let idCaso = req.body["caso"];
     if(tipo == null) tipo = 0;
-    if(isNaN(dif)) res.json(await pScore.Top10());
+    if(idCaso == null) idCaso = -1;
+    if(isNaN(dif)) res.json(await pScore.Top10(idCaso));
     else res.json(await pScore.Score(dif,tipo));
 });
 
