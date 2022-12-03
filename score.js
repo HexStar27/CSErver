@@ -7,9 +7,13 @@ const { logError } = require("./debug");
 /**
  * Devuelve los 10 jugadores con más puntuación hasta la fecha
  */
-async function Top10()
+async function Top10(idCaso)
 {
-    let consulta = "SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id GROUP BY player_id ORDER BY sum(score) DESC limit 10";
+    let consulta = "";
+    if(idCaso < 0)
+        consulta = "SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id GROUP BY player_id ORDER BY sum(score) DESC limit 10";
+    else 
+        consulta ="SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id WHERE ps.case_id = "+idCaso+"GROUP BY player_id ORDER BY sum(score) DESC limit 10";
     try{
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
@@ -35,13 +39,13 @@ async function Score(dif, tipo)
         var consulta = "";
         switch(tipo)
         {
-            case 0:
+            case 0: //Puntuación
                 consulta = "SELECT score FROM scores WHERE difficulty = "+dif+" ORDER BY score ASC limit 1024";
                 break;
-            case 1:
+            case 1: //Consultas Usadas
                 consulta = "SELECT used_queries FROM scores WHERE difficulty = "+dif+" ORDER BY used_queries ASC limit 1024";
                 break;
-            case 2:
+            case 2: //Tiempo empleado
                 consulta = "SELECT time_spent FROM scores WHERE difficulty = "+dif+" ORDER BY time_spent ASC limit 1024";
                 break;
         }
