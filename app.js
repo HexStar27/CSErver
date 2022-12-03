@@ -56,7 +56,7 @@ app.post(root+'/nickname',async (req,res)=>{
 //body: [dif]  int (optional)
 //      [tipo] int (optional) -> 0 = Scores, 1 = UsedQueries, 2 = TimeSpent
 //      [caso] int (optional)
-app.post(root+"/score", auth.validateToken, async (req,res)=>{
+app.post(root+"/score", async (req,res)=>{
     let dif = req.body["dif"];
     let tipo = req.body["tipo"];
     let idCaso = req.body["caso"];
