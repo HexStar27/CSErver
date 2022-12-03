@@ -71,7 +71,7 @@ async function ChangeNickname(email, newNick)
     }
     let id = await util.UsernameToID(email,true);
     if(id == -1) return {info:"Error... Usuario no encontrado"}
-    
+
     //Comprobar que no exista ya un usuario con ese nickname.
     let consulta = "SELECT id FROM players WHERE nickname = '"+newNick+"'"
     try {
@@ -92,6 +92,28 @@ async function ChangeNickname(email, newNick)
         return {info:"Error..."};
     }
 }
+
+/**
+ * Devuelve el nickname del jugador...
+ * @param {string} email 
+ * @returns 
+ */
+ async function GetNickname(email)
+ {
+     if(!util.SearchForKeyWords(email)) {
+         debug.logError("Error de petición, es sospechoso el valor "+email,'utility');
+         return {info:"Error..."};
+     }
+     //Cambiar el nickname
+     let consulta = "SELECT nickname FROM players WHERE email = '"+email+"'";
+     try {
+         let [rows,fields] = await db.baseP.query(consulta);
+         return {info:"Correcto", res:rows[0]['nickname'] };
+     } catch (err) {
+         debug.logError("Error de consulta en GetNickname: "+err, 'utility');
+         return {info:"Error..."};
+     }
+ }
 
 /**
  * Devuelve verdadero si el usuario y la contraseña coinciden con los de la BD
@@ -328,5 +350,6 @@ module.exports.randBetween = randBetween;
 module.exports.ValidLogin = ValidLogin;
 module.exports.UsernameToID = UsernameToID;
 module.exports.ChangeNickname = ChangeNickname;
+module.exports.GetNickname = GetNickname;
 module.exports.SearchForKeyWords = SearchForKeyWords;
 module.exports.parseExplain = parseExplain;
