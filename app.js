@@ -44,7 +44,10 @@ app.post(root+'/login', async (req,res)=>{
 app.post(root+'/nickname',async (req,res)=>{
     usuario = req.body["email"];
     nick = req.body["nickname"];
-    res.json(await util.ChangeNickname(usuario,nick));
+    if(nick == null)
+        res.json(await util.GetNickname(usuario));
+    else
+        res.json(await util.ChangeNickname(usuario,nick));
 });
 
 
