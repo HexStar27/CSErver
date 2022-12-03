@@ -159,6 +159,14 @@ app.post(root+'/case', auth.validateToken, async (req,res)=>{
     res.json(await casos.GetCasosAlmacenados(dif,nCasos));
 });
 
+//Return the data of a case with a specific id
+//body: [authorization]
+//      [caso] number
+app.post(root+'/case/get', auth.validateToken, async(req,res)=>{
+    let idCaso = req.body["caso"];
+    res.json(await casos.GetCasoEspecifico(idCaso));
+});
+
 //Return one exam case of a given difficulty
 //body: [authorization]
 //      [dif]   number
@@ -167,7 +175,7 @@ app.post(root+'/case/exam', auth.validateToken, async (req,res)=>{
     res.json(await casos.GetCasoExamen(dif));
 });
 
-//Return the FINAL case of a given difficulty
+//Return the FINAL case
 //body: [authorization]
 app.post(root+'/case/final', auth.validateToken, async (req,res)=>{
     res.json(await casos.GetCasoFinal());

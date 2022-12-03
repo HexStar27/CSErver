@@ -41,6 +41,28 @@ async function GetCasosAlmacenados(dif,nCasos)
     else return {info:"Incorrecto", res:"K COÑO ESTÁS INTENTANTO JOPUTA"};
 }
 
+/**
+ * Devuelve los datos de un caso en específico
+ * @param {int} idCaso 
+ * @returns 
+ */
+async function GetCasoEspecifico(idCaso)
+{
+    if (util.AntiInjectionNumberField(idCaso,"case"))
+    {
+        let consulta = "SELECT data from cases where id = "+idCaso
+        try {
+            let [rows,fields] = await db.baseP.query(consulta);
+            if(rows.length <= 0) return {info:"Error... No existe ese caso"}
+            else return {info:"Correcto", res:rows[0][data]}
+        } catch (err) {
+            logError("Error de consulta en GetCasoEspecifico: "+err,'case');
+            return {info:"Error..."};
+        }
+    }
+    else return {info:"Incorrecto", res:"K COÑO ESTÁS INTENTANTO JOPUTA"};
+}
+
 
 /**
  * Devuelve los datos de un caso examen preparado para esa dificultad
@@ -156,6 +178,11 @@ async function ResolverCaso(casoID, qPropuesta)
     else return {info:"Incorrecto", res:false};
 }
 
+/**
+ * Realiza una consulta en la base de datos del juego
+ * @param {string} consulta 
+ * @returns 
+ */
 async function RealizarConsulta(consulta){
 
     if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) return {info:"Incorrecto",res:{}}
@@ -196,6 +223,7 @@ function jsonArrayEquals(a,b){
 
 
 module.exports.GetCasosAlmacenados = GetCasosAlmacenados;
+module.exports.GetCasoEspecifico = GetCasoEspecifico;
 module.exports.GetCasoExamen = GetCasoExamen;
 module.exports.GetCasoFinal = GetCasoFinal;
 module.exports.ResolverCaso = ResolverCaso;
