@@ -66,17 +66,29 @@ async function UsernameToID(username,checkInjection)
 async function ChangeNickname(email, newNick)
 {
     if(!util.SearchForKeyWords(newNick)) {
-        debug.logError("Error de petición, es sospechoso el valor "+newNick,'tableService');
+        debug.logError("Error de petición, es sospechoso el valor "+newNick,'utility');
         return {info:"Error..."};
     }
     let id = await util.UsernameToID(email,true);
     if(id == -1) return {info:"Error... Usuario no encontrado"}
-    let consulta = "UPDATE players SET nickname = '"+newNick+"' WHERE id = "+id;
+    
+    //Comprobar que no exista ya un usuario con ese nickname.
+    let consulta = "SELECT id FROM players WHERE nickname = '"+newNick+"'"
+    try {
+        let [rows,fields] = await db.baseP.query(consulta);
+        if(rows.length != 0) return {info:"Error... Ya existe un jugador con ese nickname."}
+    } catch (err) {
+        debug.logError("Error de consulta en ChangeNickname al comprobar si ya existía: "+err, 'utility');
+        return {info:"Error..."};
+    }
+
+    //Cambiar el nickname
+    consulta = "UPDATE players SET nickname = '"+newNick+"' WHERE id = "+id;
     try {
         let [rows,fields] = await db.baseP.query(consulta);
         return {info:"Correcto", res:"Nickname cambiado correctamente." };
     } catch (err) {
-        debug.logError("Error de consulta en ChangeNickname: "+err, 'tableService');
+        debug.logError("Error de consulta en ChangeNickname: "+err, 'utility');
         return {info:"Error..."};
     }
 }
