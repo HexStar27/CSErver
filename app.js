@@ -41,7 +41,7 @@ app.post(root+'/login', async (req,res)=>{
 //body: [authorization]
 //      [email]
 //      [nickname]
-app.post(root+'/nickname',async (req,res)=>{
+app.post(root+'/nickname', auth.validateToken, async (req,res)=>{
     usuario = req.body["email"];
     nick = req.body["nickname"];
     if(nick == null)
