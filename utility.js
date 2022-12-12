@@ -65,7 +65,7 @@ async function UsernameToID(username,checkInjection)
  */
 async function ChangeNickname(email, newNick)
 {
-    if(!util.SearchForKeyWords(newNick)) {
+    if(!SearchForKeyWords(newNick)) {
         debug.logError("Error de petición, es sospechoso el valor "+newNick,'utility');
         return {info:"Error..."};
     }
