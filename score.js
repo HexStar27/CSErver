@@ -13,7 +13,7 @@ async function Top10(idCaso)
     if(idCaso < 0)
         consulta = "SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id GROUP BY player_id ORDER BY sum(score) DESC limit 10";
     else 
-        consulta ="SELECT p.nickname, sum(ps.score) as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id WHERE ps.case_id = "+idCaso+"GROUP BY player_id ORDER BY sum(score) DESC limit 10";
+        consulta ="SELECT p.nickname, ps.score as score FROM scores as ps INNER JOIN players as p ON ps.player_id = p.id WHERE ps.case_id = "+idCaso+" ORDER BY score DESC limit 10";
     try{
         let [rows,fields] = await db.query(consulta);
         return {info:"Correcto", res:rows};
