@@ -69,7 +69,7 @@ async function ChangeNickname(email, newNick)
         debug.logError("Error de petición, es sospechoso el valor "+newNick,'utility');
         return {info:"Error..."};
     }
-    let id = await util.UsernameToID(email,true);
+    let id = await UsernameToID(email,true);
     if(id == -1) return {info:"Error... Usuario no encontrado"}
 
     //Comprobar que no exista ya un usuario con ese nickname.
