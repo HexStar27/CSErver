@@ -26,7 +26,7 @@ async function Top10(idCaso)
 
 /**
  * Devuelve un array (de hasta 1024 valores) con las puntuaciones de los jugadores en esa dificultad
- * @param {Number} dif 
+ * @param {Number} dif dificulty or case_id depending on the value of 'tipo'
  * @param {Number} tipo
  */
 async function Score(dif, tipo)
@@ -39,14 +39,20 @@ async function Score(dif, tipo)
         var consulta = "";
         switch(tipo)
         {
-            case 0: //Puntuación
+            case 0: //Puntuación (dificultad especifica)
                 consulta = "SELECT score FROM scores WHERE difficulty = "+dif+" ORDER BY score ASC limit 1024";
                 break;
-            case 1: //Consultas Usadas
+            case 1: //Consultas Usadas (dificultad especifica)
                 consulta = "SELECT used_queries FROM scores WHERE difficulty = "+dif+" ORDER BY used_queries ASC limit 1024";
                 break;
-            case 2: //Tiempo empleado
+            case 2: //Tiempo empleado (dificultad especifica)
                 consulta = "SELECT time_spent FROM scores WHERE difficulty = "+dif+" ORDER BY time_spent ASC limit 1024";
+                break;
+            case 3: //Todo (dificultad especifica)
+                consulta = "SELECT player_id, score, used_queries, time_spent FROM scores WHERE difficulty = "+dif+" ORDER BY score ASC limit 1024";
+                break;
+            case 4: //Todo (caso específico)
+                consulta = "SELECT player_id score, used_queries, time_spent FROM scores WHERE case_id = "+dif+" ORDER BY score ASC limit 1024";
                 break;
         }
 
