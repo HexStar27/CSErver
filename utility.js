@@ -100,7 +100,7 @@ async function ChangeNickname(email, newNick)
  */
  async function GetNickname(email)
  {
-     if(!util.SearchForKeyWords(email)) {
+     if(!SearchForKeyWords(email)) {
          debug.logError("Error de petición, es sospechoso el valor "+email,'utility');
          return {info:"Error..."};
      }
