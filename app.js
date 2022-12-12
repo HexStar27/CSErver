@@ -53,7 +53,7 @@ app.post(root+'/nickname', auth.validateToken, async (req,res)=>{
 
 //---------------SCORE---------------//
 //Get Top10 score globally OR the scores of a specific difficulty OR of a specific case.
-//body: [dif]  int (optional)
+//body: [dif]  int (optional) -> dif >= 0 = Registro de puntuaciones, dif < 0 = top10 de lo que sea en 'caso'
 //      [tipo] int (optional) -> 0 = Scores, 1 = UsedQueries, 2 = TimeSpent
 //      [caso] int (optional)
 app.post(root+"/score", async (req,res)=>{
@@ -62,7 +62,7 @@ app.post(root+"/score", async (req,res)=>{
     let idCaso = req.body["caso"];
     if(tipo == null) tipo = 0;
     if(idCaso == null) idCaso = -1;
-    if(isNaN(dif)) res.json(await pScore.Top10(idCaso));
+    if(isNaN(dif) || dif < 0) res.json(await pScore.Top10(idCaso));
     else res.json(await pScore.Score(dif,tipo));
 });
 
@@ -73,7 +73,7 @@ app.post(root+"/score", async (req,res)=>{
 //      [user] string
 //      [used] number
 //      [time] number (float)
-app.post(root+"/score", auth.validateToken, async (req,res)=>{
+app.post(root+"/score/save", auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     let punt = req.body["punt"];
     let used = req.body["used"];
