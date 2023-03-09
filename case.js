@@ -116,7 +116,7 @@ async function GetCasoFinal()
  */
 async function ResolverCaso(casoID, qPropuesta)
 {
-    if(qPropuesta.indexOf(';') >= 0 || !qPropuesta.includes('SELECT')) return {info:"Incorrecto",res:{}}
+    if(qPropuesta.indexOf(';') >= 0 || !qPropuesta.includes('SELECT')) return {info:"Incorrecto",res:"La consulta debe terminar en ; y tener al menos 1 SELECT"}
     comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
     "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
     comoqueno.forEach(elem => {
