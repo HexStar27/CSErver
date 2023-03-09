@@ -116,7 +116,7 @@ async function GetCasoFinal()
  */
 async function ResolverCaso(casoID, qPropuesta)
 {
-    if(qPropuesta.indexOf(';') >= 0 || !qPropuesta.includes('SELECT')) return {info:"Incorrecto",res:"La consulta debe terminar en ; y tener al menos 1 SELECT"}
+    if(qPropuesta.indexOf(';') >= 0 || !qPropuesta.includes('SELECT')) return {info:"Incorrecto",res:"La consulta no debe tener ; y debe haber al menos un SELECT"}
     comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
     "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
     comoqueno.forEach(elem => {
@@ -185,11 +185,11 @@ async function ResolverCaso(casoID, qPropuesta)
  */
 async function RealizarConsulta(consulta){
 
-    if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) return {info:"Incorrecto",res:{}}
+    if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) return {info:"Incorrecto",res:"La consulta no debe tener ; y debe haber al menos un SELECT"}
     comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
     "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
     comoqueno.forEach(elem => {
-        if(consulta.includes(elem)) return {info:"Incorrecto",res:{}}
+        if(consulta.includes(elem)) return {info:"Incorrecto",res:"KEYWORDS sospechosas..."}
     });
 
     try{
