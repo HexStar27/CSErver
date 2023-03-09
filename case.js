@@ -186,7 +186,7 @@ async function ResolverCaso(casoID, qPropuesta)
 async function RealizarConsulta(consulta){
 
     if(consulta.indexOf(';') >= 0 || !consulta.includes('SELECT')) {
-        logError("Error, "+consulta.indexOf(';')+", "+!consulta.includes('SELECT'),'case');
+        logError("Error, "+consulta+", "+!consulta.includes('SELECT'),'case');
         return {info:"Incorrecto",res:"La consulta no debe tener ; y debe haber al menos un SELECT"}
     }
     comoqueno = ["INSERT","DELETE","UPDATE", "CREATE", "USE", 
