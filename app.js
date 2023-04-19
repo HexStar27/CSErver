@@ -167,6 +167,16 @@ app.post(root+'/case/get', auth.validateToken, async(req,res)=>{
     res.json(await casos.GetCasoEspecifico(idCaso));
 });
 
+//Return The id from all available cases that come nect to the one
+//body: [authorization]
+//      [id]   number
+//      [win]  boolean
+app.post(root+'/case/next', auth.validateToken, async (req,res)=>{
+    let id = req.body["id"];
+    let win = req.body["win"];
+    res.json(await casos.GetSiguienteCaso(id,win));
+});
+
 //Return one exam case of a given difficulty
 //body: [authorization]
 //      [dif]   number

@@ -15,7 +15,7 @@ async function GetCasosAlmacenados(dif,nCasos)
     if (util.AntiInjectionNumberField(dif,"case") &&
         util.AntiInjectionNumberField(nCasos,"case"))
     {
-        let consulta = "SELECT data from cases where dif = "+dif+" AND isExam = FALSE"
+        let consulta = "SELECT data from cases where dif = "+dif+" AND isSecondary = TRUE"
         
         try {
             let [rows,fields] = await db.baseP.query(consulta);
@@ -50,7 +50,7 @@ async function GetCasoEspecifico(idCaso)
 {
     if (util.AntiInjectionNumberField(idCaso,"case"))
     {
-        let consulta = "SELECT data from cases where id = "+idCaso
+        let consulta = "SELECT data FROM cases where id = "+idCaso
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length <= 0) return {info:"Error... No existe ese caso"}
@@ -63,6 +63,29 @@ async function GetCasoEspecifico(idCaso)
     else return {info:"Incorrecto", res:"K COÑO ESTÁS INTENTANTO JOPUTA"};
 }
 
+/**
+ * 
+ * @param {Number} idCasoActual 
+ * @param {Boolean} casoGanado 
+ */
+async function GetSiguienteCaso(idCasoActual, casoGanado)
+{
+    if (util.AntiInjectionNumberField(idCasoActual,"case"))
+    {
+        let direccion = "ifVictory"
+        if (!casoGanado) direccion = "ifDefeat"
+        let consulta = "SELECT "+direccion+" FROM casesRelations WHERE caseID = "+idCasoActual
+        try {
+            let [rows,fields] = await db.baseP.query(consulta);
+            if(rows.length <= 0) return {info:"Error... No existe ese caso"}
+            else return {info:"Correcto", res:[rows[0]['data']]}
+        } catch (err) {
+            logError("Error de consulta en GetSiguienteCaso: "+err,'case');
+            return {info:"Error..."};
+        }
+    }
+}
+
 
 /**
  * Devuelve los datos de un caso examen preparado para esa dificultad
@@ -72,7 +95,7 @@ async function GetCasoExamen(dif)
 {
     if (util.AntiInjectionNumberField(dif,"case"))
     {
-        let consulta = "SELECT id, data, dif from cases where dif = "+dif+" AND isExam = TRUE AND isFinal = FALSE";
+        let consulta = "SELECT id, data, dif FROM cases where dif = "+dif+" AND isExam = TRUE AND isFinal = FALSE";
         
         try{
             let [rows,fields] = await db.baseP.query(consulta);
@@ -94,7 +117,7 @@ async function GetCasoExamen(dif)
  */
 async function GetCasoFinal()
 {
-    let consulta = "SELECT id, data, dif from cases where isFinal = TRUE";
+    let consulta = "SELECT id, data, dif FROM cases where isFinal = TRUE";
 
     try {
         let [rows,fields] = await db.baseP.query(consulta);
@@ -128,7 +151,7 @@ async function ResolverCaso(casoID, qPropuesta)
     {
         let resultado;
         let solucion;
-        let consulta = "SELECT consulta from cases where id = "+casoID;
+        let consulta = "SELECT consulta FROM cases where id = "+casoID;
 
         let qSol = "";
         try{
@@ -224,9 +247,11 @@ function jsonArrayEquals(a,b){
 }
 
 
-module.exports.GetCasosAlmacenados = GetCasosAlmacenados;
-module.exports.GetCasoEspecifico = GetCasoEspecifico;
-module.exports.GetCasoExamen = GetCasoExamen;
-module.exports.GetCasoFinal = GetCasoFinal;
-module.exports.ResolverCaso = ResolverCaso;
-module.exports.RealizarConsulta = RealizarConsulta;
+module.exports.GetCasosAlmacenados = GetCasosAlmacenados;   //Para múltiples casos secundarios
+module.exports.GetCasoEspecifico = GetCasoEspecifico;       //Para todo
+module.exports.GetSiguienteCaso = GetSiguienteCaso;         //Para siguientes casos principales
+module.exports.GetCasoExamen = GetCasoExamen;               //Para caso examen :v
+module.exports.GetCasoFinal = GetCasoFinal;                 //Para el último caso del modo historia
+
+module.exports.ResolverCaso = ResolverCaso;                 //Comprobación de caso
+module.exports.RealizarConsulta = RealizarConsulta;         //Consulta genérica
