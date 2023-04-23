@@ -149,7 +149,7 @@ app.post(root+'/load', auth.validateToken, async (req,res)=>{
 
 
 //---------------CASOS---------------//
-//Return N cases of a given difficulty
+//Return N secondary cases of a given difficulty
 //body: [authorization]
 //      [dif]   number
 //      [casos] number

@@ -29,7 +29,7 @@ async function PlayerExist(id,checkInjection)
 
 /**
  * Devuelve la id del usuario con el nombre indicado (o null si no existe)
- * @param {string} username 
+ * @param {string} username (email)
  * @param {boolean} checkInjection 
  * @returns id del usuario o -1 si no se ha encontrado.
  */
