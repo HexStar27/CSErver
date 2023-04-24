@@ -92,7 +92,7 @@ app.post(root+"/score/total", auth.validateToken, async (req,res)=>{
 
 //Calculates the score of a given data
 //body: [authorization]
-//      [caso_id]   number
+//      [caso]   number
 //      [consultas] number
 //      [tiempo]    number
 //      [examen]    boolean
@@ -100,7 +100,7 @@ app.post(root+"/score/total", auth.validateToken, async (req,res)=>{
 //      [dificultad] number
 //      [consulta]  string
 app.post(root+"/score/calculate", auth.validateToken, async (req,res)=>{
-    let casoID = req.body["caso_id"];
+    let casoID = req.body["caso"];
     let consultasUsadas = req.body["consultas"];
     let tiempoEmpleado = req.body["tiempo"];
     let casoExamen = req.body["examen"];
