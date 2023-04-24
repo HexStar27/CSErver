@@ -68,18 +68,20 @@ app.post(root+"/score", async (req,res)=>{
 
 //Save a score to the DB
 //body: [authorization]
-//      [dif]  number
-//      [punt] number
 //      [user] string
+//      [caso] number
+//      [punt] number
+//      [dif]  number
 //      [used] number
 //      [time] number (float)
 app.post(root+"/score/save", auth.validateToken, async (req,res)=>{
-    let dif = req.body["dif"];
+    let id = await util.UsernameToID(req.body["user"],true);
+    let caso = req.body["caso"];
     let punt = req.body["punt"];
+    let dif = req.body["dif"];
     let used = req.body["used"];
     let time = req.body["time"];
-    let id = await util.UsernameToID(req.body["user"],true);
-    res.json(await pScore.SaveScore(id,punt,dif,used,time));
+    res.json(await pScore.SaveScore(id,caso,punt,dif,used,time));
 });
 
 //Return sum of scores of the given user
