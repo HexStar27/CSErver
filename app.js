@@ -63,7 +63,7 @@ app.post(root+"/score", async (req,res)=>{
     if(tipo == null) tipo = 0;
     if(idCaso == null) idCaso = -1;
     if(isNaN(dif) || dif < 0) res.json(await pScore.Top10(idCaso));
-    else res.json(await pScore.Score(dif,tipo));
+    else res.json(await pScore.Score(idCaso,dif,tipo));
 });
 
 //Save a score to the DB
