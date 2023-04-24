@@ -102,7 +102,7 @@ async function Score(dif, tipo)
             if(rows.length <= 0) //Hay que insertar
                 consulta = "INSERT INTO scores (player_id, case_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+c+","+d+","+p+","+u+","+t+")";
             else{ //Sólo actualizar
-                var oldP = parseInt(rows[0]); //Recemos
+                var oldP = parseInt(rows[0]["score"]); //Recemos
                 if( p > oldP){
                     consulta = "UPDATE scores SET score = "+p+" WHERE player_id = "+id+" AND case_id = "+c;
                 }
