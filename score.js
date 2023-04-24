@@ -105,6 +105,10 @@ async function Score(dif, tipo)
                 var oldP = parseInt(rows[0]["score"]); //Recemos
                 if( p > oldP){
                     consulta = "UPDATE scores SET score = "+p+" WHERE player_id = "+id+" AND case_id = "+c;
+                    console.log("La info:");
+                    console.log(rows);
+                    console.log(rows[0]);
+                    console.log(rows[0]["score"]);
                 }
                 else{
                     return {info:"Correcto", res:"No ha hehco falta guardarlo :v"};
@@ -112,10 +116,6 @@ async function Score(dif, tipo)
             }
             
             try{
-                console.log("La info:");
-                console.log(rows);
-                console.log(rows[0]);
-                console.log(rows[0]["score"]);
                 console.log(consulta);
                 await db.query(consulta);
                 return {info:"Correcto", res:"Puntuación guardada correctamente."};
