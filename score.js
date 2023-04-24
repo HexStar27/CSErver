@@ -29,7 +29,7 @@ async function Top10(idCaso)
  * @param {Number} dif dificulty or case_id depending on the value of 'tipo'
  * @param {Number} tipo
  */
-async function Score(dif, tipo)
+async function Score(idCaso, dif, tipo)
 {
     if(util.AntiInjectionNumberField(dif,"score") &&
         util.AntiInjectionNumberField(tipo,"score"))
@@ -52,7 +52,10 @@ async function Score(dif, tipo)
                 consulta = "SELECT player_id, score, used_queries, time_spent FROM scores WHERE difficulty = "+dif+" ORDER BY score ASC limit 1024";
                 break;
             case 4: //Todo (caso específico)
-                consulta = "SELECT player_id score, used_queries, time_spent FROM scores WHERE case_id = "+dif+" ORDER BY score ASC limit 1024";
+                consulta = "SELECT player_id, score, used_queries, time_spent FROM scores WHERE case_id = "+idCaso+" ORDER BY score ASC limit 1024";
+                break;
+            case 5: //Eficiente (Todo menos player)
+                consulta = "SELECT score AS S, used_queries AS Q, time_spent AS T FROM scores WHERE case_id = "+idCaso+" ORDER BY score ASC limit 1024";
                 break;
         }
 
