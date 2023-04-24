@@ -103,9 +103,6 @@ async function Score(dif, tipo)
                 consulta = "INSERT INTO scores (player_id, case_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+c+","+d+","+p+","+u+","+t+")";
             else{ //Sólo actualizar
                 var oldP = parseInt(rows[0]["score"]); //Recemos
-                console.log(rows);
-                console.log(rows[0]);
-                console.log(rows[0]["score"]);
                 if( p > oldP){
                     consulta = "UPDATE scores SET score = "+p+" WHERE player_id = "+id+" AND case_id = "+c;
                 }
@@ -115,7 +112,12 @@ async function Score(dif, tipo)
             }
             
             try{
-                let [rows,fields] = await db.query(consulta);
+                console.log("La info:");
+                console.log(rows);
+                console.log(rows[0]);
+                console.log(rows[0]["score"]);
+                console.log(consulta);
+                await db.query(consulta);
                 return {info:"Correcto", res:"Puntuación guardada correctamente."};
             }
             catch(err){
