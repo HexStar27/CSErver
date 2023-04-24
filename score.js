@@ -71,35 +71,40 @@ async function Score(dif, tipo)
 /**
  * Guarda en la BD los datos de la puntuación indicada
  * @param {Number} id ID del jugador
+ * @param {Number} caso
  * @param {Number} punt 
  * @param {Number} dif 
  * @param {Number} used
  * @param {Number} time
  */
- async function SaveScore(id,punt,dif,used,time)
+ async function SaveScore(id,caso,punt,dif,used,time)
  {
-     if(util.AntiInjectionNumberField(dif,'score') && 
-         util.AntiInjectionNumberField(id,'score') &&
-         util.AntiInjectionNumberField(punt,'score') &&
-         util.AntiInjectionNumberField(used,'score') && 
-         util.AntiInjectionNumberField(time,'score'))
-     {
-         let d = parseInt(dif);
-         let p = parseInt(punt);
-         let u = parseInt(used);
-         let t = parseFloat(time);
-         var consulta = "INSERT INTO scores (player_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+d+","+p+","+u+","+t+")";
-         
-         try{
-             let [rows,fields] = await db.query(consulta);
-             return {info:"Correcto", res:"Puntuación guardada correctamente."};
-         }
-         catch(err){
-             logError("Error de consulta en SaveScore: "+err, 'score');
-             return {info:"Error..."};
-         }
-     }
-     else return {info:"Incorrecto", res:"Faltan datos o son incorrectos."};
+    if(util.AntiInjectionNumberField(dif,'score') && 
+        util.AntiInjectionNumberField(id,'score') &&
+        util.AntiInjectionNumberField(punt,'score') &&
+        util.AntiInjectionNumberField(used,'score') && 
+        util.AntiInjectionNumberField(time,'score') &&
+        util.AntiInjectionNumberField(caso,'score'))
+    {
+        //TODO: Comprobar si ya hay una score del jugador en ese caso, si lo es, 
+        //      simplemente actualizar en vez de insertar
+        let c = parseInt(caso);
+        let d = parseInt(dif);
+        let p = parseInt(punt);
+        let u = parseInt(used);
+        let t = parseFloat(time);
+        var consulta = "INSERT INTO scores (player_id, case_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+c+","+d+","+p+","+u+","+t+")";
+        
+        try{
+            let [rows,fields] = await db.query(consulta);
+            return {info:"Correcto", res:"Puntuación guardada correctamente."};
+        }
+        catch(err){
+            logError("Error de consulta en SaveScore: "+err, 'score');
+            return {info:"Error..."};
+        }
+    }
+    else return {info:"Incorrecto", res:"Faltan datos o son incorrectos."};
  }
 
 /**
