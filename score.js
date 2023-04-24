@@ -86,21 +86,42 @@ async function Score(dif, tipo)
         util.AntiInjectionNumberField(time,'score') &&
         util.AntiInjectionNumberField(caso,'score'))
     {
-        //TODO: Comprobar si ya hay una score del jugador en ese caso, si lo es, 
-        //      simplemente actualizar en vez de insertar
         let c = parseInt(caso);
         let d = parseInt(dif);
         let p = parseInt(punt);
         let u = parseInt(used);
         let t = parseFloat(time);
-        var consulta = "INSERT INTO scores (player_id, case_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+c+","+d+","+p+","+u+","+t+")";
-        
+
+        //TODO: Comprobar si ya hay una score del jugador en ese caso, si lo es, 
+        //      simplemente actualizar en vez de insertar
+        let qComprobar = "SELECT score FROM scores WHERE player_id = "+id+" AND case_id = "+c;
         try{
-            let [rows,fields] = await db.query(consulta);
-            return {info:"Correcto", res:"Puntuación guardada correctamente."};
-        }
-        catch(err){
-            logError("Error de consulta en SaveScore: "+err, 'score');
+            let [rows,fields] = await db.query(qComprobar);
+            
+            var consulta;
+            if(rows.length <= 0) //Hay que insertar
+                consulta = "INSERT INTO scores (player_id, case_id, difficulty, score, used_queries, time_spent) VALUES ("+id+","+c+","+d+","+p+","+u+","+t+")";
+            else{ //Sólo actualizar
+                var oldP = parseInt(rows[0]); //Recemos
+                if( p > oldP){
+                    consulta = "UPDATE scores SET score = "+p+" WHERE player_id = "+id+" AND case_id = "+c;
+                }
+                else{
+                    return {info:"Correcto", res:"No ha hehco falta guardarlo :v"};
+                }
+            }
+            
+            try{
+                let [rows,fields] = await db.query(consulta);
+                return {info:"Correcto", res:"Puntuación guardada correctamente."};
+            }
+            catch(err){
+                logError("Error de consulta en SaveScore: "+err, 'score');
+                return {info:"Error..."};
+            }
+
+        }catch(err){
+            logError("Error de consulta en SaveScore al comprobar puntuacion: "+err, 'score');
             return {info:"Error..."};
         }
     }
