@@ -146,7 +146,6 @@ async function ResolverCaso(casoID, qPropuesta)
         if(qPropuesta.includes(elem)) return {info:"Incorrecto", res:"La consulta es sospechosa"}
     });
 
-    console.log(casoID);
     casoID = parseInt(casoID);
     if(util.AntiInjectionNumberField(casoID,'case'))
     {
