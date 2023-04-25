@@ -35,6 +35,7 @@ async function Score(idCaso, dif, tipo)
         util.AntiInjectionNumberField(tipo,"score"))
     {
         dif = parseInt(dif);
+        idCaso = parseInt(idCaso);
         tipo = parseInt(tipo);
         var consulta = "";
         switch(tipo)
