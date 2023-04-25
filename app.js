@@ -60,9 +60,10 @@ app.post(root+"/score", async (req,res)=>{
     let dif = req.body["dif"];
     let tipo = req.body["tipo"];
     let idCaso = req.body["caso"];
-    if(tipo == null) tipo = 0;
+    if(tipo == null) tipo = -1;
     if(idCaso == null) idCaso = -1;
-    if(isNaN(dif) || dif < 0) res.json(await pScore.Top10(idCaso));
+    if(dif == null) dif = -1;
+    if(tipo < 0) res.json(await pScore.Top10(idCaso));
     else res.json(await pScore.Score(idCaso,dif,tipo));
 });
 
