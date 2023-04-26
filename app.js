@@ -53,8 +53,8 @@ app.post(root+'/nickname', auth.validateToken, async (req,res)=>{
 
 //---------------SCORE---------------//
 //Get Top10 score globally OR the scores of a specific difficulty OR of a specific case.
-//body: [dif]  int (optional) -> dif >= 0 = Registro de puntuaciones, dif < 0 = top10 de lo que sea en 'caso'
-//      [tipo] int (optional) -> 0 = Scores, 1 = UsedQueries, 2 = TimeSpent
+//body: [dif]  int (optional)
+//      [tipo] int (optional)
 //      [caso] int (optional)
 app.post(root+"/score", async (req,res)=>{
     let dif = req.body["dif"];
