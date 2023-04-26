@@ -58,6 +58,10 @@ async function Score(idCaso, dif, tipo)
             case 5: //Eficiente (Todo menos player)
                 consulta = "SELECT score AS S, used_queries AS Q, time_spent AS T FROM scores WHERE case_id = "+idCaso+" ORDER BY score ASC limit 1024";
                 break;
+            case 6: //Puntuación completa de un sólo jugador
+                let id = await util.UsernameToID(idCaso);
+                consulta = "SELECT score FROM scores AS s INNER JOIN players AS p ON s.player_id = p.id WHERE p.id = "+id;
+                break;
         }
 
         try{
