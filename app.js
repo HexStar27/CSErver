@@ -127,6 +127,15 @@ app.get(root+"/event/random", async (req,res)=>{
     res.json(await event.getRandomEvent());
 });
 
+//Returns 0 to 2 random events given 2 karma values
+//body: [C] number [-255,255]
+//      [G] number [-255,255]
+app.post(root+"/event/karma", async (req,res)=>{   
+    let corpo = req.body["C"];
+    let gente = req.body["G"];
+    res.json(await event.EventoAleatorioSegunFavor(corpo,gente));
+});
+
 
 //---------------GAME----------------//
 //Save the savefile of a user in the DB
