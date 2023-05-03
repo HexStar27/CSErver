@@ -115,6 +115,24 @@ async function ChangeNickname(email, newNick)
      }
  }
 
+ async function NicknameExist(nick)
+ {
+    if(!SearchForKeyWords(email)) {
+        debug.logError("Error de petición, es sospechoso el valor "+nick,'utility');
+        return {info:"Error..."};
+    }
+    
+    let consulta = "SELECT COUNT(nickname) AS val FROM players WHERE nickname = '"+nick+"'";
+    try {
+        let [rows,fields] = await db.baseP.query(consulta);
+        return rows[0]['val'] > 0;
+    } catch (err) {
+        debug.logError("Error de consulta en NicknameExist: "+err, 'utility');
+        return false;
+    }
+
+ }
+
 /**
  * Devuelve verdadero si el usuario y la contraseña coinciden con los de la BD
  * @param {*} username 
@@ -351,5 +369,6 @@ module.exports.ValidLogin = ValidLogin;
 module.exports.UsernameToID = UsernameToID;
 module.exports.ChangeNickname = ChangeNickname;
 module.exports.GetNickname = GetNickname;
+module.exports.NicknameExist = NicknameExist;
 module.exports.SearchForKeyWords = SearchForKeyWords;
 module.exports.parseExplain = parseExplain;
