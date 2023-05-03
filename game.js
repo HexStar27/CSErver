@@ -85,7 +85,7 @@ async function CreateAccount(nick,email,password)
         check.AntiInjectionStringField(password,'game'))
     {
         //1º Comprobar que ni el nickname, ni email estén repetidos.
-        let id = await check.UsernameToID(email,false);
+        let id = await check.UsernameToID(email,false,false);
         if(id >= 0) return {info:"Incorrecto", res:"Ya existe una cuenta con ese email."};
         else{
             if(await check.NicknameExist(nick))
