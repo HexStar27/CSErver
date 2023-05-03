@@ -191,7 +191,7 @@ async function CompleteScore(id)
         
         try{
             let [rows,fields] = await db.query(consulta);
-            if (rows.length == 0) return {info:"Incorrecto", res:"Este jugador no tiene puntuación."};
+            if (rows.length == 0) return {info:"Correcto", res:0};
             return {info:"Correcto", res:rows[0]["SUM(score)"]};
         }
         catch(err){
