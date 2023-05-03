@@ -33,7 +33,7 @@ async function PlayerExist(id,checkInjection)
  * @param {boolean} checkInjection 
  * @returns id del usuario o -1 si no se ha encontrado.
  */
-async function UsernameToID(username,checkInjection)
+async function UsernameToID(username,checkInjection,verbose = true)
 {
     let valid = true;
     if(checkInjection) valid = AntiInjectionStringField(username,'utility');
@@ -44,7 +44,7 @@ async function UsernameToID(username,checkInjection)
         try{
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length == 0){
-                debug.logError("No se ha encontrado una id para el usuario "+username,'utility');
+                if(verbose) debug.logError("No se ha encontrado una id para el usuario "+username,'utility');
                 return -1;
             }
             else return rows[0]["id"];
