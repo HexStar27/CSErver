@@ -97,7 +97,7 @@ async function CreateAccount(nick,email,password)
                     let [rows,fields] = await db.query(consulta);
                     return {info:"Correcto", res:"Cuenta creada con éxito."};
                 }catch(err) {
-                    logError("Error inesperado de consulta en CreateAccount.",'game');
+                    logError("Error inesperado de consulta en CreateAccount:"+err,'game');
                     return {info:"Error..."};
                 }
             }
