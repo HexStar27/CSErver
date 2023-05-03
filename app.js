@@ -45,7 +45,7 @@ app.post(root+'/signin', async (req,res)=>{
     let result = await game.CreateAccount(nick,email,password);
     if(result["info"] != "Correcto") res.json(result);
     else{
-        let accessToken = await auth.Login(username, password);
+        let accessToken = await auth.Login(email, password);
         if(accessToken.length > 0) 
             res.header('authorization',accessToken).json({message: 'Usuario correcto', token: accessToken});
         else
