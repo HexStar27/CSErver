@@ -92,7 +92,7 @@ async function CreateAccount(nick,email,password)
                 return {info:"Incorrecto", res:"Ya existe una cuenta con ese apodo."};
             else{
                 //2º Añadimos cuenta a base de datos
-                let consulta = "INSERT INTO 'players' ('email', 'nickname', 'password') VALUES ('"+email+"','"+nick+"','"+password+"')";
+                let consulta = "INSERT INTO `players` (`email`, `nickname`, `password`) VALUES ('"+email+"','"+nick+"','"+password+"')";
                 try{
                     let [rows,fields] = await db.query(consulta);
                     return {info:"Correcto", res:"Cuenta creada con éxito."};
