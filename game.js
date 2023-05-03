@@ -73,5 +73,39 @@ async function Save(id,savefile)
     else return {info:"Incorrecto", res:"Nope..."};
 }
 
+/**
+ * @param {string} nick apodo
+ * @param {string} email email
+ * @param {string} password contraseña cifrada
+ */
+async function CreateAccount(nick,email,password)
+{
+    if( check.AntiInjectionStringField(nick,'game') &&
+        check.AntiInjectionStringField(email,'game') &&
+        check.AntiInjectionStringField(password,'game'))
+    {
+        //1º Comprobar que ni el nickname, ni email estén repetidos.
+        let id = await check.UsernameToID(email,false);
+        if(id >= 0) return {info:"Incorrecto", res:"Ya existe una cuenta con ese email."};
+        else{
+            if(await check.NicknameExist(nick))
+                return {info:"Incorrecto", res:"Ya existe una cuenta con ese apodo."};
+            else{
+                //2º Añadimos cuenta a base de datos
+                let consulta = "INSERT INTO 'players' ('email', 'nickname', 'password') VALUES ('"+email+"','"+nick+"','"+password+"')";
+                try{
+                    let [rows,fields] = await db.query(consulta);
+                    return {info:"Correcto", res:"Cuenta creada con éxito."};
+                }catch(err) {
+                    logError("Error inesperado de consulta en CreateAccount.",'game');
+                    return {info:"Error..."};
+                }
+            }
+        }
+    }
+    else return {info:"Incorrecto", res:"No se pudo crear la cuenta."};
+}
+
 module.exports.Load = load;
 module.exports.Save = Save;
+module.exports.CreateAccount = CreateAccount;

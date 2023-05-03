@@ -37,6 +37,22 @@ app.post(root+'/login', async (req,res)=>{
     });
 });
 
+app.post(root+'/signin', async (req,res)=>{
+    nick = req.body["nickname"];
+    email = req.body["email"];
+    password = req.body["password"];
+
+    let result = await game.CreateAccount(nick,email,password);
+    if(result["info"] != "Correcto") res.json(result);
+    else{
+        let accessToken = await auth.Login(username, password);
+        if(accessToken.length > 0) 
+            res.header('authorization',accessToken).json({message: 'Usuario correcto', token: accessToken});
+        else
+            res.json({ message: 'Usuario incorrecto', token: '' });
+    }
+});
+
 //Change Nickname
 //body: [authorization]
 //      [email]
