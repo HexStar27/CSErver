@@ -8,24 +8,34 @@ const { logError } = require("./debug");
 /**
  * Devuelve un número de casos especificado guardados en la base de datos
  * @param {Number} dif 
- * @param {Number} nCasos 
+ * @param {Number} nCasos
+ * @param {Array} casosCompletados json con las ID de los casos que el jugador ha hecho
  */
-async function GetCasosAlmacenados(dif,nCasos)
+async function GetCasosAlmacenados(dif,nCasos,casosCompletados)
 {
+    let listaOk = true;
+    for(var i in casosCompletados)
+    {
+        listaOk = util.AntiInjectionNumberField(casosCompletados[i],"case") && listaOk;
+    }
+
     if (util.AntiInjectionNumberField(dif,"case") &&
-        util.AntiInjectionNumberField(nCasos,"case"))
+        util.AntiInjectionNumberField(nCasos,"case") && 
+        listaOk)
     {
         let consulta = "SELECT data from cases where dif = "+dif+" AND isSecondary = TRUE"
         
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             let n = rows.length;
-            let total = nCasos;
+            let total = Math.min(nCasos,n);
             let lista = [];
 
-            if(n < total) total = n;
-
-            for (let i=0; i < n; i++) lista.push(rows[i]['data']);
+            for (let i=0; i < n; i++) {
+                let caso = rows[i]['data'];
+                if(!casosCompletados.includes(caso["id"]))
+                    lista.push(caso);
+            }
             lista.sort((a,b)=>{return 0.5 - Math.random()});
             let conjunto = lista.slice(0,total);
             conjunto.forEach(elem => {
@@ -247,7 +257,7 @@ function jsonArrayEquals(a,b){
 }
 
 
-module.exports.GetCasosAlmacenados = GetCasosAlmacenados;   //Para múltiples casos secundarios
+module.exports.GetCasosSecundarios = GetCasosAlmacenados;   //Para múltiples casos secundarios
 module.exports.GetCasoEspecifico = GetCasoEspecifico;       //Para todo
 module.exports.GetSiguienteCaso = GetSiguienteCaso;         //Para siguientes casos principales
 module.exports.GetCasoExamen = GetCasoExamen;               //Para caso examen :v

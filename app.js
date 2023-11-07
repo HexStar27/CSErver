@@ -178,10 +178,16 @@ app.post(root+'/load', auth.validateToken, async (req,res)=>{
 //body: [authorization]
 //      [dif]   number
 //      [casos] number
+//      [completados] json con formato -> { "completados": [...] }
 app.post(root+'/case', auth.validateToken, async (req,res)=>{
     let dif = req.body["dif"];
     let nCasos = req.body["casos"];
-    res.json(await casos.GetCasosAlmacenados(dif,nCasos));
+    let casosCompletados_unparsed = req.body["completados"];
+    
+    let casosCompletados_json = JSON.parse(casosCompletados_unparsed);
+    let completados = casosCompletados_json["completados"];
+
+    res.json(await casos.GetCasosSecundarios(dif,nCasos,completados));
 });
 
 //Return the data of a case with a specific id
@@ -192,7 +198,7 @@ app.post(root+'/case/get', auth.validateToken, async(req,res)=>{
     res.json(await casos.GetCasoEspecifico(idCaso));
 });
 
-//Return The id from all available cases that come nect to the one
+//Return The id from all available cases that come next to this one
 //body: [authorization]
 //      [id]   number
 //      [win]  boolean

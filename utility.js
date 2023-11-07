@@ -173,7 +173,7 @@ async function ValidLogin(username,password,checkInjection)
  */
 function AntiInjectionNumberField(id, name)
 {
-    let wrong = Number.isNaN(id);
+    let wrong = isNaN(id);
     if(wrong) debug.logSQLInjectionWarning(name,id);
     return !wrong;
 }
@@ -187,7 +187,7 @@ function AntiInjectionNumberField(id, name)
  */
 function AntiInjectionStringField(data,name,pass)
 {
-    //Esto habrá que modificarlo según los carácteres válidos que permita el cirfado
+    //Esto habrá que modificarlo según los carácteres válidos que permita el cifrado
     //de contraseña en unity.
     const invalidChars = ['"',"'"];
     let isString = typeof(data) == typeof("a");
