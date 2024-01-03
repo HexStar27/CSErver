@@ -59,6 +59,23 @@ async function getEvent(id)
 }
 
 /**
+ * Devuelve una lista con todos los eventos
+ */
+async function getEvents()
+{
+    let consulta = "SELECT data from events";
+    try {
+        let [rows,fields] = await db.query(consulta);
+        return {info:"Correcto", res:rows};
+    }
+    catch(algo)
+    {
+        logError("Error de consulta en getEvents: "+algo, 'event');
+        return {info:"Error..."};
+    }
+}
+
+/**
  * Devuelve los datos de los eventos según un criterio alterado por el favor de los dos grupos sociales.
  * @param {Number} fCorpo [-255,255] que indica "lo bien que le caes a las corporaciones"
  * @param {Number} fGente [-255,255] que indica "lo bien que le caes a los ciudadanos"
@@ -122,4 +139,4 @@ function getRandomFromArray(array)
 }
 
 module.exports.getEvent = getEvent;
-module.exports.getRandomEvent = getRandomEvent;
+module.exports.getEvents = getEvents;
