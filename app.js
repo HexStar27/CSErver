@@ -18,7 +18,7 @@ app.use(express.json());
 const root = '/game'
 
 //---------------USERS---------------//
-//Log in
+// Log in
 //body: [username]
 //      [password]
 app.post(root+'/login', async (req,res)=>{
@@ -37,6 +37,10 @@ app.post(root+'/login', async (req,res)=>{
     });
 });
 
+// Create account
+//body: [nickname]
+//      [email]
+//      [password]
 app.post(root+'/signin', async (req,res)=>{
     nick = req.body["nickname"];
     email = req.body["email"];
@@ -68,7 +72,7 @@ app.post(root+'/nickname', auth.validateToken, async (req,res)=>{
 
 
 //---------------SCORE---------------//
-//Get Top10 score globally OR the scores of a specific difficulty OR of a specific case.
+// Get Top10 score globally OR the scores of a specific difficulty OR of a specific case.
 //body: [dif]  int (optional)
 //      [tipo] int (optional)
 //      [caso] int (optional)
@@ -80,7 +84,7 @@ app.post(root+"/score", async (req,res)=>{
     else res.json(await pScore.Score(idCaso,dif,tipo));
 });
 
-//Save a score to the DB
+// Save a score to the DB
 //body: [authorization]
 //      [user] string
 //      [caso] number
@@ -98,7 +102,7 @@ app.post(root+"/score/save", auth.validateToken, async (req,res)=>{
     res.json(await pScore.SaveScore(id,caso,punt,dif,used,time));
 });
 
-//Return sum of scores of the given user
+// Return sum of scores of the given user
 //body: [authorization]
 //      [user] string
 app.post(root+"/score/total", auth.validateToken, async (req,res)=>{
@@ -106,7 +110,7 @@ app.post(root+"/score/total", auth.validateToken, async (req,res)=>{
     res.json(await pScore.CompleteScore(id));
 });
 
-//Calculates the score of a given data
+// Calculates the score of a given data
 //body: [authorization]
 //      [caso]   number
 //      [consultas] number
@@ -131,30 +135,21 @@ app.post(root+"/score/calculate", auth.validateToken, async (req,res)=>{
 
 
 //---------------EVENT---------------//
-//Returns an especific event
+// Returns an especific event
 //body: [id] number
 app.post(root+"/event", async (req,res)=>{   
     let id = req.body["id"];
     res.json(await event.getEvent(id));
 });
 
-//Returns a random event
+// Returns a random event
 app.get(root+"/event/random", async (req,res)=>{
     res.json(await event.getRandomEvent());
 });
 
-//Returns 0 to 2 random events given 2 karma values
-//body: [C] number [-255,255]
-//      [G] number [-255,255]
-app.post(root+"/event/karma", async (req,res)=>{   
-    let corpo = req.body["C"];
-    let gente = req.body["G"];
-    res.json(await event.EventoAleatorioSegunFavor(corpo,gente));
-});
-
 
 //---------------GAME----------------//
-//Save the savefile of a user in the DB
+// Save the savefile of a user in the DB
 //body: [authorization]
 //      [user] string
 //      [save] json
@@ -164,7 +159,7 @@ app.post(root+"/save", auth.validateToken, async (req,res)=>{
     res.json(await game.Save(id,saveFile));
 });
 
-//Load the savefile to a user of the DB
+// Load the savefile to a user of the DB
 //body: [authorization]
 //      [user] string
 app.post(root+'/load', auth.validateToken, async (req,res)=>{
@@ -174,67 +169,41 @@ app.post(root+'/load', auth.validateToken, async (req,res)=>{
 
 
 //---------------CASOS---------------//
-//Return N secondary cases of a given difficulty
-//body: [authorization]
-//      [dif]   number
-//      [casos] number
-//      [completados] json con formato -> { "completados": [...] }
-app.post(root+'/case', auth.validateToken, async (req,res)=>{
-    let dif = req.body["dif"];
-    let nCasos = req.body["casos"];
-    let casosCompletados_unparsed = req.body["completados"];
-    
-    let casosCompletados_json = JSON.parse(casosCompletados_unparsed);
-    let completados = casosCompletados_json["completados"];
-
-    res.json(await casos.GetCasosSecundarios(dif,nCasos,completados));
-});
-
-//Return the data of a case with a specific id
+// Return the data of a case with a specific id
 //body: [authorization]
 //      [caso] number
+//returns: A case object serialized in the form of a json
 app.post(root+'/case/get', auth.validateToken, async(req,res)=>{
     let idCaso = req.body["caso"];
     res.json(await casos.GetCasoEspecifico(idCaso));
 });
 
-//Return The id from all available cases that come next to this one
+// Return The id from all available cases that come next to the one sent
 //body: [authorization]
 //      [id]   number
 //      [win]  boolean
+//returns: A json array whose elements are case IDs
 app.post(root+'/case/next', auth.validateToken, async (req,res)=>{
     let id = req.body["id"];
     let win = req.body["win"];
     res.json(await casos.GetSiguienteCaso(id,win));
 });
 
-//Return one exam case of a given difficulty
-//body: [authorization]
-//      [dif]   number
-app.post(root+'/case/exam', auth.validateToken, async (req,res)=>{
-    let dif = req.body["dif"];
-    res.json(await casos.GetCasoExamen(dif));
-});
-
-//Return the FINAL case
-//body: [authorization]
-app.post(root+'/case/final', auth.validateToken, async (req,res)=>{
-    res.json(await casos.GetCasoFinal());
-});
-
-//Returns whether a proposed solution is valid or not
+// User is trying to solve a case
 //body: [authorization]
 //      [caseid] number
 //      [caso]   number
+//returns: A bool stating if the proposed query is correct for the case.
 app.post(root+'/case/solve', auth.validateToken, async (req,res)=>{
     let caseID = req.body["caseid"];
     let consulta = req.body["caso"];
     res.json(await casos.ResolverCaso(caseID, consulta));
 });
 
-//Return query given to the GAME database
+// User is trying to query the GAME database
 //body: [authorization]
 //      [consulta] string
+//returns: A json array whose elements are tuples from the GAME database.
 app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
     let consulta = req.body["consulta"];
     res.json(await casos.RealizarConsulta(consulta));
@@ -242,25 +211,23 @@ app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
 
 
 //----------OTROS SERVICIOS----------//
-//Return tables availables from the codes given.
+// Return tables availables from the codes given.
 //body: [authorization]
 //      [codigos] array
+//returns: A json array whose elements are tuples from the "tablesUnlockCode" table.
 app.post(root+'/meta', auth.validateToken, async (req,res)=>{
     let codigos = req.body["codigos"];
     res.json(await tService.GetTablesAvailables(codigos));
 });
-//Return columns from a given table.
+
+// Return columns from a given table.
 //body: [authorization]
 //      [table] array
+//returns: A json array whose elements are lists of column names per table.
 app.post(root+'/meta/col', auth.validateToken, async (req,res)=>{
     let table = req.body["table"];
     res.json(await tService.GetTableColumns(table));
 });
-
-//Oda a la alegría
-//app.get('/', (req,res)=>{
-//    res.json({respuesta:"POR FIN"});
-//});
 
 app.listen(5000,()=>{
     console.log("Servicio operativo! " + debug.logFullDate());

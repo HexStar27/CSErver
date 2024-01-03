@@ -123,4 +123,3 @@ function getRandomFromArray(array)
 
 module.exports.getEvent = getEvent;
 module.exports.getRandomEvent = getRandomEvent;
-module.exports.EventoAleatorioSegunFavor = EventoAleatorioSegunFavor;
