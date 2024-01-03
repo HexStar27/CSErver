@@ -142,11 +142,10 @@ app.post(root+"/event", async (req,res)=>{
     res.json(await event.getEvent(id));
 });
 
-// Returns a random event
-app.get(root+"/event/random", async (req,res)=>{
-    res.json(await event.getRandomEvent());
+// Returns a list of all events in the game
+app.get(root+"/event/bydif", async (req,res)=>{
+    res.json(await event.getEvents());
 });
-
 
 //---------------GAME----------------//
 // Save the savefile of a user in the DB

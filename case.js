@@ -88,7 +88,7 @@ async function GetSiguienteCaso(idCasoActual, casoGanado)
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length <= 0) return {info:"Error... No existe ese caso"}
-            else return {info:"Correcto", res:[rows[0]['data']]}
+            else return {info:"Correcto", res:[rows]}
         } catch (err) {
             logError("Error de consulta en GetSiguienteCaso: "+err,'case');
             return {info:"Error..."};
@@ -257,11 +257,8 @@ function jsonArrayEquals(a,b){
 }
 
 
-module.exports.GetCasosSecundarios = GetCasosAlmacenados;   //Para múltiples casos secundarios
 module.exports.GetCasoEspecifico = GetCasoEspecifico;       //Para todo
 module.exports.GetSiguienteCaso = GetSiguienteCaso;         //Para siguientes casos principales
-module.exports.GetCasoExamen = GetCasoExamen;               //Para caso examen :v
-module.exports.GetCasoFinal = GetCasoFinal;                 //Para el último caso del modo historia
 
 module.exports.ResolverCaso = ResolverCaso;                 //Comprobación de caso
 module.exports.RealizarConsulta = RealizarConsulta;         //Consulta genérica
