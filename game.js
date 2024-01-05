@@ -54,15 +54,15 @@ async function Save(id,savefile)
         } 
         catch {
             try{
-            let consulta = "UPDATE savedfiles SET file = '"+savefileTXT+"' WHERE player_id = "+id;
-            try{
-                let [rows,fields] = await db.query(consulta);
-                return {info:"Correcto", res:"Archivo sobreescrito con éxito."};
-            }
-            catch(err){
-                logError("Error de consulta en Save: "+err,'game');
-                return {info:"Error..."};
-            }
+                let consulta = "UPDATE savedfiles SET file = '"+savefileTXT+"' WHERE player_id = "+id;
+                try{
+                    let [rows,fields] = await db.query(consulta);
+                    return {info:"Correcto", res:"Archivo sobreescrito con éxito."};
+                }
+                catch(err){
+                    logError("Error de consulta en Save: "+err,'game');
+                    return {info:"Error..."};
+                }
             }
             catch{
                 logError("Error inesperado de consulta en Save.",'game');

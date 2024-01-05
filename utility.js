@@ -215,8 +215,8 @@ function AntiInjectionStringField(data,name,pass)
  */
 function SearchForKeyWords(data, name)
 {
-    const invalidStrings = ["INSERT","DELETE","SELECT","UPDATE", "CREATE", "USE", 
-    "TABLE", "ALTER", "DROP", "VALUES", "VIEW"];
+    const invalidStrings = ["INSERT ","DELETE ","SELECT ","UPDATE ", "CREATE ", "USE ", 
+    "TABLE ", "ALTER ", "DROP ", "VALUES ", "VIEW "];
     let isString = typeof(data) == typeof("a");
     
     if(isString)
