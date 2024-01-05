@@ -15,7 +15,7 @@ async function GetTablesAvailables(codigos)
         codigos.forEach(cod => {
         if(!util.SearchForKeyWords(cod,"tableService")) return {info:"Error... Un poco SUSpechoso..."};
         condiciones += "id = '" +cod+ "' OR ";
-    });
+        });
     } catch{
         return  {info:"Error..."};
     }

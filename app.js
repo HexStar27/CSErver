@@ -10,6 +10,7 @@ var game    = require('./game');
 var debug   = require('./debug');
 var casos   = require('./case');
 var tService= require('./tableService')
+var lrs     = require('./lrs')
 
 const app = express();
 app.use(express.urlencoded( {extended:false} ));
@@ -210,6 +211,14 @@ app.post(root+'/case/check', auth.validateToken, async(req,res)=>{
 
 
 //----------OTROS SERVICIOS----------//
+// Stores all sent xAPI statements
+//body: [authorization]
+//      [registros] array
+app.post(root+'/lrs', auth.validateToken, async (req,res)=>{
+    let rawJSON = req.body["registros"];
+    res.json(await lrs.AddListOfStatements(rawJSON));
+});
+
 // Return tables availables from the codes given.
 //body: [authorization]
 //      [codigos] array
