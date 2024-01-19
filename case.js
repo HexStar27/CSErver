@@ -6,7 +6,7 @@ const { logError } = require("./debug");
 
 
 /**
- * Devuelve un número de casos especificado guardados en la base de datos
+ * (Desuso)Devuelve un número de casos especificado guardados en la base de datos
  * @param {Number} dif 
  * @param {Number} nCasos
  * @param {Array} casosCompletados json con las ID de los casos que el jugador ha hecho
@@ -64,7 +64,7 @@ async function GetCasoEspecifico(idCaso)
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length <= 0) return {info:"Error... No existe ese caso"}
-            else return {info:"Correcto", res:[rows[0]['data']]}
+            else return {info:"Correcto", res:[rows]}
         } catch (err) {
             logError("Error de consulta en GetCasoEspecifico: "+err,'case');
             return {info:"Error..."};
@@ -84,23 +84,32 @@ async function GetSiguienteCaso(idCasoActual, casoGanado)
     {
         let direccion = "ifVictory"
         if (!casoGanado) direccion = "ifDefeat"
-        let consulta = "SELECT "+direccion+" FROM casesRelations WHERE caseID = "+idCasoActual
+        let consulta = "SELECT "+direccion+" AS next FROM casesRelations WHERE caseID = "+idCasoActual
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length <= 0) return {info:"Error... No existe ese caso"}
-            else return {info:"Correcto", res:[rows]}
+            
+            //Obtener el contenido de los casos directamente y devolver eso
+            let ids = rows[i]['next']['ids'];
+            console.log(ids);
+            consulta = "SELECT data from cases where id IN "+ids;
+            try {
+                let [rows,fields] = await db.baseP.query(consulta);
+                return {info:"Correcto", res:rows};
+            } 
+            catch(err) {
+                logError("Error de consulta en GetSiguienteCaso al intentar obtener casos: "+err,'case');
+                return {info:"Error..."};
+            }
         } catch (err) {
-            logError("Error de consulta en GetSiguienteCaso: "+err,'case');
+            logError("Error de consulta en GetSiguienteCaso al buscar las IDs: "+err,'case');
             return {info:"Error..."};
         }
     }
 }
 
 
-/**
- * Devuelve los datos de un caso examen preparado para esa dificultad
- * @param {Number} dif 
- */
+
 async function GetCasoExamen(dif)
 {
     if (util.AntiInjectionNumberField(dif,"case"))
@@ -121,10 +130,6 @@ async function GetCasoExamen(dif)
     else return {info:"Incorrecto", res:"K COÑO ESTÁS INTENTANTO JOPUTA"};
 }
 
-
-/**
- * Devuelve un caso en res con la dificultad máxima.
- */
 async function GetCasoFinal()
 {
     let consulta = "SELECT id, data, dif FROM cases where isFinal = TRUE";
@@ -258,7 +263,7 @@ function jsonArrayEquals(a,b){
 
 
 module.exports.GetCasoEspecifico = GetCasoEspecifico;       //Para todo
-module.exports.GetSiguienteCaso = GetSiguienteCaso;         //Para siguientes casos principales
+module.exports.GetSiguienteCaso = GetSiguienteCaso;         //Para siguientes casos
 
 module.exports.ResolverCaso = ResolverCaso;                 //Comprobación de caso
 module.exports.RealizarConsulta = RealizarConsulta;         //Consulta genérica

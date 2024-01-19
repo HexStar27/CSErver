@@ -125,12 +125,12 @@ app.post(root+"/score/calculate", auth.validateToken, async (req,res)=>{
     let consultasUsadas = req.body["consultas"];
     let tiempoEmpleado = req.body["tiempo"];
     let casoExamen = req.body["examen"];
-    let retoOpcional = req.body["reto"];
+    let retos = req.body["reto"];
     let dificultad = req.body["dificultad"];
     let consultaEvaluada = req.body["consulta"];
 
     let p = await pScore.CalcularScore(casoID,consultaEvaluada, consultasUsadas,
-                                tiempoEmpleado,casoExamen, retoOpcional, dificultad);
+                                tiempoEmpleado,casoExamen, retos, dificultad);
     res.json(p);
 });
 
@@ -144,7 +144,7 @@ app.post(root+"/event", async (req,res)=>{
 });
 
 // Returns a list of all events in the game
-app.get(root+"/event/bydif", async (req,res)=>{
+app.get(root+"/event/all", async (req,res)=>{
     res.json(await event.getEvents());
 });
 

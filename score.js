@@ -139,11 +139,11 @@ async function Score(idCaso, dif, tipo)
  * @param {Number} consultasUsadas 
  * @param {Number} tiempoEmpleado 
  * @param {Boolean} casoExamen 
- * @param {Boolean} retoOpcional 
+ * @param {Number} retos 
  * @param {Number} dificultad 
  * @returns 
  */
-async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEmpleado, casoExamen, retoOpcional, dificultad)
+async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEmpleado, casoExamen, retos, dificultad)
 {
     //1º Comprobar éxito
     let exito = await puzzle.ResolverCaso(casoID, consultaEvaluada);
@@ -155,7 +155,7 @@ async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEm
     let datos = await util.parseExplain(casoID,consultaEvaluada);
     //datos-> "cost", "rows", "time"
     
-    //3º Calcular fórmula (Temporal)
+    //3º Calcular fórmula
     let a=1.85, b=10;
     let puntConsulta = b/(b+a*(consultasUsadas-1)*(consultasUsadas-1));
     a=0.24;
@@ -165,12 +165,12 @@ async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEm
         puntEfic = 2*dificultad/(2*dificultad+datos["cost"]*datos["cost"]);
     else
         puntEfic = 1;
-    //Puntuación máxima = 200*dificultad
+
     let puntuacion = (100*puntConsulta + 100*puntTiempo)*dificultad + 20*puntEfic;
-    //Puntuación máxima verdadera = 200*dificultad + 200
     if(casoExamen) puntuacion+=100;
-    if(retoOpcional) puntuacion+=100;
-    //Reducción por eficiencia
+    puntuacion+=50*retos;
+    //Puntuación máxima = 200*dificultad + 100 + 50*retos
+    //Puntuación mínima (teórica) = 0
 
     puntuacion = parseInt(puntuacion);
     return {info:"Correcto", res:puntuacion, otros:datos};
