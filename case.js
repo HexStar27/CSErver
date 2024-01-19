@@ -64,7 +64,7 @@ async function GetCasoEspecifico(idCaso)
         try {
             let [rows,fields] = await db.baseP.query(consulta);
             if(rows.length <= 0) return {info:"Error... No existe ese caso"}
-            else return {info:"Correcto", res:[rows]}
+            else return {info:"Correcto", res:rows}
         } catch (err) {
             logError("Error de consulta en GetCasoEspecifico: "+err,'case');
             return {info:"Error..."};
