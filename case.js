@@ -86,11 +86,16 @@ async function GetSiguienteCaso(idCasoActual, casoGanado)
         if (!casoGanado) direccion = "ifDefeat"
         let consulta = "SELECT "+direccion+" AS next FROM casesRelations WHERE caseID = "+idCasoActual
         try {
-            let [rows,fields] = await db.baseP.query(consulta);
-            if(rows.length <= 0) return {info:"Error... No existe ese caso"}
+            let ids = [1];
+            let rows = 0,fields = 0;
+            if (idCasoActual >= 0)
+            {
+                [rows,fields] = await db.baseP.query(consulta);
+                if(rows.length <= 0) return {info:"Error... No existe ese caso"}
+                ids = rows[i]['next']['ids'];
+            }
             
             //Obtener el contenido de los casos directamente y devolver eso
-            let ids = rows[i]['next']['ids'];
             console.log(ids);
             consulta = "SELECT data from cases where id IN "+ids;
             try {
