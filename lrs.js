@@ -20,18 +20,8 @@ async function AddListOfStatements(rawJSON)
     return {info:"Correcto", res:"Registros almacenados con éxito."};
 }
 
-async function AddStatement(rawJSON)
+async function AddStatement(json)
 {
-    let json;
-    try{
-        json = JSON.parse(rawJSON);
-    }
-    catch(err)
-    {
-        logError("Error al parsear JSON: "+err, 'lsr');
-        return -1;
-    }
-
     if (json == undefined) return -1;
     console.log("Buen parse: "+json);
 
