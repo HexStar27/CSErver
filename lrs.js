@@ -29,15 +29,15 @@ async function AddStatement(json)
     {
         console.log("Limpio crímenes.");
         let actor = json["actor"];
-        if(actor == undefined) return -1;
+        if(actor == undefined) {console.log(actor);return -1;}
         else actor = "'"+actor+"'";
 
         let verb = json["verb"];
-        if(verb == undefined) return -1;
+        if(verb == undefined) {console.log(actor);return -1;}
         else verb = "'"+verb+"'";
 
         let obj = json["object"];
-        if(obj == undefined) return -1;
+        if(obj == undefined) {console.log(actor);return -1;}
         else obj = "'"+obj+"'";
 
         let res = json["result"];
