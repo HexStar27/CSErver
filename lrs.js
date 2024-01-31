@@ -20,13 +20,12 @@ async function AddListOfStatements(rawJSON)
     return {info:"Correcto", res:"Registros almacenados con éxito."};
 }
 
-async function AddStatement(json)
+async function AddStatement(rawjson)
 {
-    if (json == undefined) return -1;
-    console.log("Buen parse: "+json);
-    json = JSON.parse(json);
-    console.log(typeof(json));
-    if (check.SearchForKeyWords(json,"lsr"))
+    if (rawjson == undefined) return -1;
+    console.log("Buen parse: "+rawjson);
+    let json = JSON.parse(rawjson);
+    if (check.SearchForKeyWords(rawjson,"lsr"))
     {
         console.log("Limpio crímenes.");
         let actor = JSON.stringify(json["actor"]);
@@ -41,11 +40,11 @@ async function AddStatement(json)
         if(obj == undefined) {console.log("Obj: "+obj);return -1;}
         else obj = "'"+obj+"'";
 
-        let res = json["result"];
+        let res = JSON.stringify(json["result"]);
         if(res == undefined) res = "null";
         else res = "'"+res+"'";
 
-        let ctx = json["context"];
+        let ctx = JSON.stringify(json["context"]);
         if(ctx == undefined) ctx = "null";
         else ctx = "'"+ctx+"'";
 
@@ -54,7 +53,7 @@ async function AddStatement(json)
         else time = "'"+time+"'";
 
         let consulta = "INSERT INTO learningRecord (actor, verb, object, result, context, timestamp, whole_statement) VALUES ("+
-        actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+json+"')";
+        actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+rawjson+"')";
 
         console.log("Valor de la consulta: "+consulta);
 
