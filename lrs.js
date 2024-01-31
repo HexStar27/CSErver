@@ -28,15 +28,15 @@ async function AddStatement(json)
     if (check.SearchForKeyWords(json,"lsr"))
     {
         console.log("Limpio crímenes.");
-        let actor = json["actor"];
+        let actor = JSON.stringify(json["actor"]);
         if(actor == undefined) {console.log(actor);return -1;}
         else actor = "'"+actor+"'";
 
-        let verb = json["verb"];
+        let verb = JSON.stringify(json["verb"]);
         if(verb == undefined) {console.log(verb);return -1;}
         else verb = "'"+verb+"'";
 
-        let obj = json["object"];
+        let obj = JSON.stringify(json["object"]);
         if(obj == undefined) {console.log(obj);return -1;}
         else obj = "'"+obj+"'";
 
