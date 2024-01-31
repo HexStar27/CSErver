@@ -33,11 +33,11 @@ async function AddStatement(json)
         else actor = "'"+actor+"'";
 
         let verb = json["verb"];
-        if(verb == undefined) {console.log(actor);return -1;}
+        if(verb == undefined) {console.log(verb);return -1;}
         else verb = "'"+verb+"'";
 
         let obj = json["object"];
-        if(obj == undefined) {console.log(actor);return -1;}
+        if(obj == undefined) {console.log(obj);return -1;}
         else obj = "'"+obj+"'";
 
         let res = json["result"];
