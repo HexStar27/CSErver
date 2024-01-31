@@ -25,7 +25,7 @@ async function AddStatement(json)
     if (json == undefined) return -1;
     console.log("Buen parse: "+json);
 
-    if (check.SearchForKeyWords(rawJSON,"lsr"))
+    if (check.SearchForKeyWords(json,"lsr"))
     {
         console.log("Limpio crímenes.");
         let actor = json["actor"];
@@ -53,7 +53,7 @@ async function AddStatement(json)
         else time = "'"+time+"'";
 
         let consulta = "INSERT INTO learningRecord (actor, verb, object, result, context, timestamp, whole_statement) VALUES ("+
-        actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+rawJSON+"')";
+        actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+json+"')";
 
         console.log("Valor de la consulta: "+consulta);
 
