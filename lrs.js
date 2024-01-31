@@ -12,7 +12,6 @@ async function AddListOfStatements(rawJSON)
 {
     let json = JSON.parse(rawJSON);
     json = json["lista"];
-    console.log(json);
     for (var idx in json) 
     {
         let result = await AddStatement(json[idx]);
@@ -23,8 +22,6 @@ async function AddListOfStatements(rawJSON)
 
 async function AddStatement(rawJSON)
 {
-    console.log("Procesando Statement...");
-    console.log(rawJSON);
     let json;
     try{
         json = JSON.parse(rawJSON);
@@ -36,7 +33,7 @@ async function AddStatement(rawJSON)
     }
 
     if (json == undefined) return -1;
-    console.log("Buen parse.");
+    console.log("Buen parse: "+json);
 
     if (check.SearchForKeyWords(rawJSON,"lsr"))
     {
@@ -65,9 +62,10 @@ async function AddStatement(rawJSON)
         if(time == undefined) time = "null";
         else time = "'"+time+"'";
 
-        console.log("Preparando consulta...");
         let consulta = "INSERT INTO learningRecord (actor, verb, object, result, context, timestamp, whole_statement) VALUES ("+
         actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+rawJSON+"')";
+
+        console.log("Valor de la consulta: "+consulta);
 
         try {
             await db.query(consulta);
