@@ -10,6 +10,8 @@ var check = require("./utility");
  */
 async function AddListOfStatements(rawJSON)
 {
+    console.log("Recibido...");
+    console.log(rawJSON);
     let json = JSON.parse(rawJSON);
     json = json["lista"];
     for (var elem in json) 
@@ -22,6 +24,8 @@ async function AddListOfStatements(rawJSON)
 
 async function AddStatement(rawJSON)
 {
+    console.log("Procesando Statement...");
+    console.log(rawJSON);
     let json;
     try{
         json = JSON.parse(rawJSON);
@@ -33,8 +37,11 @@ async function AddStatement(rawJSON)
     }
 
     if (json == undefined) return -1;
+    console.log("Buen parse.");
+
     if (check.SearchForKeyWords(rawJSON,"lsr"))
     {
+        console.log("Limpio crímenes.");
         let actor = json["actor"];
         if(actor == undefined) return -1;
         else actor = "'"+actor+"'";
@@ -59,16 +66,18 @@ async function AddStatement(rawJSON)
         if(time == undefined) time = "null";
         else time = "'"+time+"'";
 
+        console.log("Preparando consulta...");
         let consulta = "INSERT INTO learningRecord (actor, verb, object, result, context, timestamp, whole_statement) VALUES ("+
         actor+", "+verb+", "+obj+", "+res+", "+ctx+", "+time+", '"+rawJSON+"')";
 
         try {
             await db.query(consulta);
+            console.log("Terminada lectura de statement correctamente!");
             return 1;
         }
         catch(err) {
             logError("Error de consulta en al intentar almacenar el registro: "+err,'lsr');
-                    return -1;
+            return -1;
         }
     }
     else return -1;
