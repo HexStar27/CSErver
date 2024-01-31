@@ -12,7 +12,12 @@ async function AddListOfStatements(rawJSON)
 {
     let json = JSON.parse(rawJSON);
     json = json["lista"];
-    for (var elem in json) await AddStatement(elem);
+    for (var elem in json) 
+    {
+        let result = await AddStatement(elem);
+        if (result == -1) return {info:"Error..."};
+    }
+    return {info:"Correcto", res:"Registros almacenados con éxito."};
 }
 
 async function AddStatement(rawJSON)
@@ -24,22 +29,22 @@ async function AddStatement(rawJSON)
     catch(err)
     {
         logError("Error al parsear JSON: "+err, 'lsr');
-        return {info:"Error..."};
+        return -1;
     }
 
-    if (json == undefined) return {info:"Error..."};
+    if (json == undefined) return -1;
     if (check.SearchForKeyWords(rawJSON,"lsr"))
     {
         let actor = json["actor"];
-        if(actor == undefined) return {info:"Error..."};
+        if(actor == undefined) return -1;
         else actor = "'"+actor+"'";
 
         let verb = json["verb"];
-        if(verb == undefined) return {info:"Error..."};
+        if(verb == undefined) return -1;
         else verb = "'"+verb+"'";
 
         let obj = json["object"];
-        if(obj == undefined) return {info:"Error..."};
+        if(obj == undefined) return -1;
         else obj = "'"+obj+"'";
 
         let res = json["result"];
@@ -59,14 +64,14 @@ async function AddStatement(rawJSON)
 
         try {
             await db.query(consulta);
-            return {info:"Correcto", res:"Registro almacenado con éxito."};
+            return 1;
         }
         catch(err) {
             logError("Error de consulta en al intentar almacenar el registro: "+err,'lsr');
-                    return {info:"Error..."};
+                    return -1;
         }
     }
-    else return {info:"Error..."};
+    else return -1;
 }
 
 module.exports.AddListOfStatements = AddListOfStatements;
