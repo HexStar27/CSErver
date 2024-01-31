@@ -10,13 +10,12 @@ var check = require("./utility");
  */
 async function AddListOfStatements(rawJSON)
 {
-    console.log("Recibido...");
     let json = JSON.parse(rawJSON);
     json = json["lista"];
     console.log(json);
-    for (var elem in json) 
+    for (var idx in json) 
     {
-        let result = await AddStatement(json["lista"][elem]);
+        let result = await AddStatement(json[idx]);
         if (result == -1) return {info:"Error..."};
     }
     return {info:"Correcto", res:"Registros almacenados con éxito."};
