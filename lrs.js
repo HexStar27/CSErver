@@ -24,6 +24,7 @@ async function AddStatement(json)
 {
     if (json == undefined) return -1;
     console.log("Buen parse: "+json);
+    json = JSON.parse(json);
     console.log(typeof(json));
     if (check.SearchForKeyWords(json,"lsr"))
     {
