@@ -155,22 +155,27 @@ async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEm
     let datos = await util.parseExplain(casoID,consultaEvaluada);
     //datos-> "cost", "rows", "time"
     
-    //3º Calcular fórmula
+    //3º Calcular fórmulas
     let a=1.85, b=10;
     let puntConsulta = b/(b+a*(consultasUsadas-1)*(consultasUsadas-1));
-    a=0.24;
-    let puntTiempo = b/(b+a*(tiempoEmpleado-1));
+
+    a=0.36; b = 40;
+    //La única forma de terminar un caso antes de los 10 segundos es el copia y pega consultas, algo a evitar...
+    let tSensible = Math.max(0,tiempoEmpleado-10);
+    let puntTiempo = b/(b+a*(tSensible));
+
     let puntEfic;
     if(datos["cost"] >= 0)
         puntEfic = 2*dificultad/(2*dificultad+datos["cost"]*datos["cost"]);
-    else
-        puntEfic = 1;
+    else puntEfic = 1;
 
     let puntuacion = (100*puntConsulta + 100*puntTiempo)*dificultad + 20*puntEfic;
     if(casoExamen) puntuacion+=100;
     puntuacion+=50*retos;
-    //Puntuación máxima = 200*dificultad + 100 + 50*retos
+    //Puntuación máxima = (100+100)*dificultad + 20 + 100 + 50*retos
     //Puntuación mínima (teórica) = 0
+    //Para un caso de los primeros suponiendo 4 consultas usadas y 4 minutos para resolverlo:
+    // (37.5+32.6)*1 + 20*0? + 0 + 50*0 = 70.1 -> 70 es la puntuación mínima razonable.
 
     puntuacion = parseInt(puntuacion);
     return {info:"Correcto", res:puntuacion, otros:datos};
