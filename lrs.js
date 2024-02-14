@@ -26,15 +26,15 @@ async function AddStatement(rawjson)
     let json = JSON.parse(rawjson);
     if (check.SearchForKeyWords(rawjson,"lsr"))
     {
-        let actor = JSON.stringify(json["actor"]);
+        let actor = JSON.stringify(json["actor"]["mbox"]);
         if(actor == undefined) return -1;
         else actor = "'"+actor+"'";
 
-        let verb = JSON.stringify(json["verb"]);
+        let verb = JSON.stringify(json["verb"]["id"]);
         if(verb == undefined) return -1;
         else verb = "'"+verb+"'";
 
-        let obj = JSON.stringify(json["object"]);
+        let obj = JSON.stringify(json["object"]["id"]);
         if(obj == undefined) return -1;
         else obj = "'"+obj+"'";
 
