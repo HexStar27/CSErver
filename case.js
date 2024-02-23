@@ -92,7 +92,7 @@ async function GetSiguienteCaso(idCasoActual, casoGanado)
             {
                 [rows,fields] = await db.baseP.query(consulta);
                 if(rows.length <= 0) return {info:"Error... No existe ese caso"}
-                ids = rows[i]['next']['ids'];
+                ids = rows[0]['next']['ids'];
             }
             
             //Obtener el contenido de los casos directamente y devolver eso
