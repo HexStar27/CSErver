@@ -96,7 +96,6 @@ async function GetSiguienteCaso(idCasoActual, casoGanado)
             }
             
             //Obtener el contenido de los casos directamente y devolver eso
-            console.log(ids);
             consulta = "SELECT data from cases where id IN ("+ids.toString()+")";
             try {
                 let [rows,fields] = await db.baseP.query(consulta);
