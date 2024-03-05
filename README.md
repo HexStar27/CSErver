@@ -1,5 +1,5 @@
 # CSErver
-Server para soportar el juego serio CSE : Investigations.
+Server para soportar el juego serio [CSE : Investigations](https://github.com/HexStar27/cse-investigaciones).
 
 # Instalación
 Hace falta tener instalado node.js, npm, y mysql.
