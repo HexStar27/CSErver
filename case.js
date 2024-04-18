@@ -169,7 +169,7 @@ async function ResolverCaso(casoID, qPropuesta)
     if(util.AntiInjectionNumberField(casoID,'case'))
     {
         let resultado;
-        let solucion;
+        let solucion = [];
         let consulta = "SELECT consulta FROM cases where id = "+casoID;
 
         let qSol = "";
@@ -181,9 +181,13 @@ async function ResolverCaso(casoID, qPropuesta)
             return {info:"Error...", res:"El caso que se está intentando resolver no existe (?)"};
         }
 
-        try{ //Se obtiene la solución almacenada del caso
-            let [r1,f1] = await db.gameP.query(qSol);
-            solucion = r1;
+        try{ //Se obtienen las posibles soluciones almacenadas del caso
+            qSol = qSol.split(";");
+            for(let i = 0; i < qSol.length; i++)
+            {
+                let [r1,f1] = await db.gameP.query(qSol[i]);
+                solucion.push(r1);
+            }
         }catch(err){
             logError("Error de consulta al obtener la solución en ResolverCaso: "+err,'case');
             return {info:"Error..."};
@@ -197,27 +201,33 @@ async function ResolverCaso(casoID, qPropuesta)
             return {info:"Error..."};
         }
 
-        let esIgual = resultado.length == solucion.length;
-        if (esIgual)
+        //Comprobar que el resultado sea igual a al menos una solución
+        let esIgual = true;
+        let s;
+        for(s = 0; s < solucion.length; s++)
         {
+            esIgual = true;
+            let sol = solucion[s];
             for (let index = 0; index < resultado.length; index++) {
-                const element = resultado[index];
                 let a = JSON.stringify(resultado[index]);
-                let b = JSON.stringify(solucion[index]);
+                let b = JSON.stringify(sol[index]);
                 esIgual = esIgual && (a == b);
             }
+            if(esIgual) break;
         }
+
+        if (!esIgual) s = -1;
         
         //Si por algún fallo ambas cadenas están vacías, no se contará como correcta la solución.
-        let noVacio = solucion.length != 0;
+        let noVacio = solucion[s].length != 0;
         
-        if(noVacio) return {info:"Correcto", res:esIgual};
+        if(noVacio) return {info:"Correcto", res:s};
         else{
             logError("Error, un caso nunca debería dar como solución una consulta vacía",'case');
             return {info:"Error... Algo ha pasado con el caso(?)"};
         }
     }
-    else return {info:"Incorrecto", res:false};
+    else return {info:"Incorrecto", res:-1};
 }
 
 /**
@@ -242,27 +252,6 @@ async function RealizarConsulta(consulta){
     }catch(err){
         return {info:"Correcto",res:err}
     }
-}
-
-function isEqualJson(a,b){
-    k1 = Object.keys(a);
-    k2 = Object.keys(b);
-    return k1.length === k2.length && Object.keys(a).every(key=>a[key] == b[key]);
-}
-
-function jsonArrayEquals(a,b){
-    if (Array.isArray(a) && Array.isArray(b)){
-        let contenido = true;
-        let i = 0;
-        for (; i < a.length && contenido; i++) {
-            contenido = false;
-            for (let j = 0; j < b.length; j++) {
-                contenido = isEqualJson(a[i],b[i]);
-            }
-        }
-        return i == a.length;
-    }
-    else return false;
 }
 
 
