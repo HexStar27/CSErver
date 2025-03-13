@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `db_game`;
+USE `db_game`;

@@ -1,16 +1,38 @@
 # CSErver
 Server para soportar el juego serio [CSE : Investigations](https://github.com/HexStar27/cse-investigaciones).
 
+Versión desarrollada para usarla con docker compose.
+Sirve para abstraer la configuración de mysql y nginx. Esto facilita infinítamente el despliegue.
+
 # Instalación
-Hace falta tener instalado node.js, npm, y mysql.
+Dependencias: docker (y su extensión docker compose).
+Véase la documentación oficial de [Docker](https://docs.docker.com/compose/install/) para saber más sobre cómo instalarlo.
 
-Para instalar las dependencias basta con ejecutar en consola: npm update
+El proyecto usa un fichero .env en el directorio raiz para obtener variables que deberían ser privadas en producción. 
+El repositorio contiene dicho fichero pero sin contener los datos relevantes, por lo que deberán rellenarse antes de ejecutarlo.
 
-el proyecto usa un fichero .env para obtener variables que deberían ser privadas. Para usarlo en el proyecto descargado, añade en el mismo nivel que el resto del código un fichero ".env" con las variables necesarias.
-Las variables que se usan se encuentran en los archivos authentication.js y mysql.js.
+
+Tras tenerlo configurado ya solo bastaría con ejecutar el siguiente comando en el directorio raiz:
+```
+docker compose build
+```
 
 # Ejecución
-El archivo principal del proyecto se llama app.js
-Para ejecutarlo basta con poner en consola: node app
 
-El programa loguea problemas que ocurren durante su funcionamiento ocupando el uso de la consola. Se recomienda crear un daemon que pase el log del programa a un fichero, así cuando deje de ejecutarse se podrá ver que ha ocurrido (en qué fecha y en qué parte del código, etc)
+Para ejecutarlo en la terminal:
+```
+docker compose up
+```
+Y para terminar el proceso simplemente presiona Ctrl+C y espera a que terminen de pararse los procesos.
+
+Opcionalmente, se puede usar la opción -d (detach) para que se ejecute en segundo plano:
+```
+docker compose up -d
+```
+Para terminar el proceso, ejecuta en el mismo directorio el siguiente comando:
+```
+docker compose down
+```
+
+Nota: Parar la ejecución de la base de datos no hará que desaparezcan los datos gracias a los docker volumes.
+(El mismo volume se puede eliminar incluyendo el parametro -v en el comando anterior)

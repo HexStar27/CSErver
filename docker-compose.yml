@@ -1,0 +1,43 @@
+services:
+    app:
+        container_name: CSErver
+        restart: always
+        build:
+            context: ./app
+        depends_on:
+            - mysql
+        networks:
+            - net
+        ports:
+            - "5000:5000"
+
+    nginx:
+        container_name: Nginx
+        restart: always
+        build:
+            context: ./nginx
+        depends_on:
+            - app
+        networks:
+            - net
+        ports:
+            - "80:80"
+    
+    mysql:
+        container_name: DB
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        build:
+            context: ./mysql
+        volumes: #For persistent storage
+            - mysql_volume:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - net
+
+volumes:
+    mysql_volume:
+
+networks:
+    net:
