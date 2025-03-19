@@ -4,6 +4,11 @@ services:
         restart: always
         build:
             context: ./app
+            args:
+                SECRET: $SECRET
+                MYSQL_BASE_PASS: $MYSQL_BASE_PASS
+                MYSQL_GAME_PASS: $MYSQL_GAME_PASS
+        
         depends_on:
             - mysql
         networks:
@@ -16,6 +21,7 @@ services:
         restart: always
         build:
             context: ./nginx
+        
         depends_on:
             - app
         networks:
@@ -26,9 +32,13 @@ services:
     mysql:
         container_name: DB
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            - MYSQL_ROOT_PASSWORD
         build:
             context: ./mysql
+            args:
+                MYSQL_BASE_PASS: $MYSQL_BASE_PASS
+                MYSQL_GAME_PASS: $MYSQL_GAME_PASS
+            
         volumes: #For persistent storage
             - mysql_volume:/var/lib/mysql
         ports:
