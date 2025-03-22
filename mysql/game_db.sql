@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `db_game`;
+CREATE DATABASE IF NOT EXISTS `db_game` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `db_game`;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `correos` (
 --
 
 CREATE TABLE `grabacionRestaurante` (
-  `transcripcion` int NOT NULL,
+  `transcripcion` varchar(200) NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -85,9 +85,9 @@ CREATE TABLE `grabacionRestaurante` (
 
 CREATE TABLE `megaMilky_productos` (
   `id` int NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(80) NOT NULL,
   `precio` float NOT NULL,
-  `tipo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'otros',
+  `tipo` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'otros',
   `stock` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -112,7 +112,7 @@ CREATE TABLE `megaMilky_ventas` (
 --
 
 CREATE TABLE `muricaGuns_armasRegistradas` (
-  `numSerie` int NOT NULL,
+  `numSerie` int UNSIGNED NOT NULL,
   `dni` int NOT NULL,
   `tipo` varchar(50) NOT NULL,
   `marca` varchar(50) NOT NULL
@@ -126,9 +126,9 @@ CREATE TABLE `muricaGuns_armasRegistradas` (
 
 CREATE TABLE `paulsPizzeria_inventario` (
   `id` int NOT NULL,
-  `objeto` varchar(50) NOT NULL,
-  `tipo` varchar(50) NOT NULL DEFAULT 'varios',
-  `proveedor` varchar(50) DEFAULT NULL,
+  `objeto` varchar(80) NOT NULL,
+  `tipo` varchar(32) NOT NULL DEFAULT 'varios',
+  `proveedor` varchar(32) DEFAULT NULL,
   `existencias` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -139,10 +139,10 @@ CREATE TABLE `paulsPizzeria_inventario` (
 --
 
 CREATE TABLE `pingBusquedas` (
-  `correo` int NOT NULL,
+  `correo` varchar(40) NOT NULL,
   `busqueda` varchar(200) NOT NULL,
   `fecha` datetime NOT NULL,
-  `ip` int NOT NULL
+  `ip` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -175,7 +175,7 @@ CREATE TABLE `rinconDelTurro_reservas` (
 --
 
 CREATE TABLE `rutas` (
-  `matricula` varchar(4) NOT NULL,
+  `matricula` varchar(7) NOT NULL,
   `zonaOrigen` varchar(80) NOT NULL,
   `zonaDestino` varchar(80) NOT NULL,
   `distanciaViaje` float NOT NULL,
@@ -231,184 +231,3 @@ CREATE TABLE `viviendas` (
   `titular` int DEFAULT NULL,
   `esPiso` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `alojadoEn`
---
-ALTER TABLE `alojadoEn`
-  ADD KEY `ciudadano` (`ciudadano`),
-  ADD KEY `vivienda_2` (`vivienda`),
-  ADD KEY `vivienda_3` (`vivienda`);
-
---
--- Indices de la tabla `asistenteVoz`
---
-ALTER TABLE `asistenteVoz`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `ciudadanos`
---
-ALTER TABLE `ciudadanos`
-  ADD PRIMARY KEY (`dni`);
-
---
--- Indices de la tabla `correos`
---
-ALTER TABLE `correos`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `grabacionRestaurante`
---
-ALTER TABLE `grabacionRestaurante`
-  ADD UNIQUE KEY `hora` (`hora`);
-
---
--- Indices de la tabla `megaMilky_productos`
---
-ALTER TABLE `megaMilky_productos`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `megaMilky_ventas`
---
-ALTER TABLE `megaMilky_ventas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `muricaGuns_armasRegistradas`
---
-ALTER TABLE `muricaGuns_armasRegistradas`
-  ADD PRIMARY KEY (`numSerie`);
-
---
--- Indices de la tabla `paulsPizzeria_inventario`
---
-ALTER TABLE `paulsPizzeria_inventario`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `rinconDelTurro_mesas`
---
-ALTER TABLE `rinconDelTurro_mesas`
-  ADD UNIQUE KEY `idReserva` (`idReserva`);
-
---
--- Indices de la tabla `rinconDelTurro_reservas`
---
-ALTER TABLE `rinconDelTurro_reservas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `transbordos`
---
-ALTER TABLE `transbordos`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `transbordos_empleados`
---
-ALTER TABLE `transbordos_empleados`
-  ADD PRIMARY KEY (`idTransbordo`);
-
---
--- Indices de la tabla `vehiculos`
---
-ALTER TABLE `vehiculos`
-  ADD PRIMARY KEY (`matricula`),
-  ADD KEY `titular_id` (`idTitular`);
-
---
--- Indices de la tabla `viviendas`
---
-ALTER TABLE `viviendas`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `direccion` (`direccion`),
-  ADD KEY `titular` (`titular`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `asistenteVoz`
---
-ALTER TABLE `asistenteVoz`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `ciudadanos`
---
-ALTER TABLE `ciudadanos`
-  MODIFY `dni` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `correos`
---
-ALTER TABLE `correos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `megaMilky_productos`
---
-ALTER TABLE `megaMilky_productos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `megaMilky_ventas`
---
-ALTER TABLE `megaMilky_ventas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `paulsPizzeria_inventario`
---
-ALTER TABLE `paulsPizzeria_inventario`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `rinconDelTurro_reservas`
---
-ALTER TABLE `rinconDelTurro_reservas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `transbordos`
---
-ALTER TABLE `transbordos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `viviendas`
---
-ALTER TABLE `viviendas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `alojadoEn`
---
-ALTER TABLE `alojadoEn`
-  ADD CONSTRAINT `alojadoEn_ibfk_1` FOREIGN KEY (`vivienda`) REFERENCES `viviendas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `alojadoEn_ibfk_2` FOREIGN KEY (`ciudadano`) REFERENCES `ciudadanos` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `vehiculos`
---
-ALTER TABLE `vehiculos`
-  ADD CONSTRAINT `vehiculos_ibfk_1` FOREIGN KEY (`idTitular`) REFERENCES `ciudadanos` (`dni`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `viviendas`
---
-ALTER TABLE `viviendas`
-  ADD CONSTRAINT `viviendas_ibfk_1` FOREIGN KEY (`titular`) REFERENCES `ciudadanos` (`dni`) ON DELETE SET NULL ON UPDATE CASCADE;
-COMMIT;

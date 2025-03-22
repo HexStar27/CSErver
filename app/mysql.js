@@ -14,7 +14,8 @@ const baseConnection = mysql.createPool({
     password: process.env.DB_BASE_PASS,
     database: process.env.DB_BASE_NAME,
     waitForConnections: true,
-    queueLimit: 0
+    queueLimit: 0,
+    charset: 'utf8mb4'
 });
 const promiseBase = baseConnection.promise();
 
@@ -29,7 +30,8 @@ const promiseBase = baseConnection.promise();
     password: process.env.DB_GAME_PASS,
     database: process.env.DB_GAME_NAME,
     waitForConnections: true,
-    queueLimit: 0
+    queueLimit: 0,
+    charset: 'utf8mb4'
 })
 const promiseGame = gameConnection.promise();
 
