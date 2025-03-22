@@ -7,6 +7,7 @@ USE `db_base`;
 
 CREATE USER IF NOT EXISTS 'manager'@'%' IDENTIFIED BY 'REPLACEME_BP';
 GRANT SELECT,INSERT,UPDATE,DELETE ON db_base.* TO 'manager'@'%';
+GRANT SELECT ON db_game.* TO 'manager'@'%';
 
 CREATE USER IF NOT EXISTS 'reader'@'%' IDENTIFIED BY 'REPLACEME_GP';
 GRANT SELECT ON db_game.* TO 'reader'@'%';

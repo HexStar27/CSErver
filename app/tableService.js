@@ -41,7 +41,7 @@ async function GetTableColumns(table)
         debug.logError("Error de petición, es sospechoso el valor "+table,'tableService');
         return {info:"Error... Un poco SUSpechoso..."};
     }
-    let consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'csedb_game' AND TABLE_NAME = '" +table+ "'";
+    let consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'db_game' AND TABLE_NAME = '" +table+ "'";
 
     try {
         let [rows,fields] = await db.query(consulta);

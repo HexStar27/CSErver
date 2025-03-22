@@ -148,8 +148,6 @@ async function CalcularScore(casoID, consultaEvaluada, consultasUsadas, tiempoEm
     //1º Comprobar éxito
     let exito = await puzzle.ResolverCaso(casoID, consultaEvaluada);
     if(exito["info"] != "Correcto") return exito;
-    let continuar = exito["res"];
-    if(!continuar) return {info:"Incorrecto",res:"La consulta no soluciona el caso."};
     
     //2º Obtener datos de EXPLAIN ANALYZE
     let datos = await util.parseExplain(casoID,consultaEvaluada);
