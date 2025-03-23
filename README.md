@@ -9,7 +9,8 @@ Dependencias: docker (y su extensión docker compose).
 Véase la documentación oficial de [Docker](https://docs.docker.com/compose/install/) para saber más sobre cómo instalarlo.
 
 El proyecto usa un fichero .env en el directorio raiz para obtener variables que deberían ser privadas en producción. 
-El repositorio contiene dicho fichero pero sin contener los datos relevantes, por lo que deberán rellenarse antes de ejecutarlo.
+El repositorio contiene dicho fichero con datos de ejemplo, explicándolos e indicando dónde se usan, 
+por lo que deberán modificarse antes de ejecutarlo en producción. ESTA ACCIÓN DEBE SER OBLIGATORIA, POR FAVOR.
 
 
 Tras tenerlo configurado ya solo bastaría con ejecutar el siguiente comando en el directorio raiz:
