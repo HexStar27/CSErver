@@ -247,6 +247,8 @@ async function RealizarConsulta(consulta){
     });
 
     try{
+        let l = Math.max(consulta.indexOf("LIMIT"),consulta.indexOf("limit"));
+        if (l < consulta.length/2) consulta += " LIMIT 1000"; //Avoid server useless overload
         let [rows,fields] = await db.gameP.query(consulta);
         return {info:"Correcto",res:rows}
     }catch(err){
