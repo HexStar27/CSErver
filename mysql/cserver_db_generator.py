@@ -1385,17 +1385,18 @@ rutas.append([R.choice(vehiculos)[0],wetgroove["nombre"],korumiv["nombre"],calcu
 rutas.append([R.choice(vehiculos)[0],wetgroove["nombre"],cgavku["nombre"],calcular_distancia_viaje(wetgroove["pos"],cgavku["pos"]),"2224-04-21"])
 # p1d5
 rturro = localizaciones[2]["lista"][4]
-rutas.append([R.choice(vehiculos)[0],avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-01-30"])
-rutas.append([R.choice(vehiculos)[0],avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-01-21"])
-rutas.append([R.choice(vehiculos)[0],avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-02-13"])
-rutas.append([R.choice(vehiculos)[0],avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-02-06"])
-rutas.append([R.choice(vehiculos)[0],avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-04-15"])
+mat1=R.choice(vehiculos)[0];mat2=R.choice(vehiculos)[0];mat3=R.choice(vehiculos)[0];mat4=R.choice(vehiculos)[0];mat5=R.choice(vehiculos)[0]
+rutas.append([mat1,avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-01-30"])
+rutas.append([mat2,avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-01-21"])
+rutas.append([mat3,avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-02-13"])
+rutas.append([mat4,avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-02-06"])
+rutas.append([mat5,avcosmi["nombre"],rturro["nombre"],calcular_distancia_viaje(avcosmi["pos"],rturro["pos"]),"2224-04-15"])
 miramontes = localizaciones[0]["lista"][3]
-rutas.append([R.choice(vehiculos)[0],rturro["nombre"],korumiv["nombre"],calcular_distancia_viaje(rturro["pos"],korumiv["pos"]),"2224-01-30"])
-rutas.append([R.choice(vehiculos)[0],rturro["nombre"],cgavku["nombre"],calcular_distancia_viaje(rturro["pos"],cgavku["pos"]),"2224-01-21"])
-rutas.append([R.choice(vehiculos)[0],rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[2]["lista"][0]["pos"]),"2224-02-13"])
-rutas.append([R.choice(vehiculos)[0],rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[2]["lista"][0]["pos"]),"2224-02-06"])
-rutas.append([R.choice(vehiculos)[0],rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[1]["lista"][0]["pos"]),"2224-04-15"])
+rutas.append([mat1,rturro["nombre"],korumiv["nombre"],calcular_distancia_viaje(rturro["pos"],korumiv["pos"]),"2224-01-30"])
+rutas.append([mat2,rturro["nombre"],cgavku["nombre"],calcular_distancia_viaje(rturro["pos"],cgavku["pos"]),"2224-01-21"])
+rutas.append([mat3,rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[2]["lista"][0]["pos"]),"2224-02-13"])
+rutas.append([mat4,rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[2]["lista"][0]["pos"]),"2224-02-06"])
+rutas.append([mat5,rturro["nombre"],miramontes["nombre"],calcular_distancia_viaje(rturro["pos"],localizaciones[1]["lista"][0]["pos"]),"2224-04-15"])
 # p2d5
 ccorgomatic = localizaciones[2]["lista"][5]; l1 = localizacion_aleatoria(0); l2 = localizacion_aleatoria(0); l3 = localizacion_aleatoria(1)
 localizacion_aleatoria(0)

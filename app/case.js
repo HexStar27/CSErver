@@ -203,7 +203,7 @@ async function ResolverCaso(casoID, qPropuesta)
 
         //Comprobar que el resultado sea igual a al menos una solución
         let esIgual = true;
-        let s;
+        let s = 0;
         for(s = 0; s < solucion.length; s++)
         {
             esIgual = true;
@@ -219,7 +219,7 @@ async function ResolverCaso(casoID, qPropuesta)
         if (!esIgual) s = -1;
         
         //Si por algún fallo ambas cadenas están vacías, no se contará como correcta la solución.
-        let noVacio = solucion[s].length != 0;
+        let noVacio = resultado.length > 0;
         
         if(noVacio) return {info:"Correcto", res:s};
         else{
